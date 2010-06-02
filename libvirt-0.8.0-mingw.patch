@@ -1,0 +1,64 @@
+diff --git a/src/libvirt_private.syms b/src/libvirt_private.syms
+index 7950bcd..6a2e569 100644
+--- a/src/libvirt_private.syms
++++ b/src/libvirt_private.syms
+@@ -511,14 +511,9 @@ virNWFilterHashTableRemoveEntry;
+ 
+ 
+ # nwfilter_gentech_driver.h
+-virNWFilterInstantiateFilter;
+-virNWFilterTeardownFilter;
+ 
+ 
+ # nwfilter_learnipaddr.h
+-virNWFilterGetIpAddrForIfname;
+-virNWFilterDelIpAddrForIfname;
+-virNWFilterLookupLearnReq;
+ 
+ 
+ # pci.h
+@@ -623,7 +618,6 @@ virMutexUnlock;
+ virCondInit;
+ virCondDestroy;
+ virCondWait;
+-virCondWaitUntil;
+ virCondSignal;
+ virCondBroadcast;
+ 
+@@ -667,7 +661,6 @@ virFileReadPid;
+ virFileLinkPointsTo;
+ virParseNumber;
+ virParseVersionString;
+-virPipeReadUntilEOF;
+ virAsprintf;
+ virRun;
+ virSkipSpaces;
+diff --git a/src/conf/nwfilter_conf.c b/src/conf/nwfilter_conf.c
+index f4af126..336ea3b 100644
+--- a/src/conf/nwfilter_conf.c
++++ b/src/conf/nwfilter_conf.c
+@@ -33,6 +33,7 @@
+ #if HAVE_NET_ETHERNET_H
+ # include <net/ethernet.h>
+ #endif
++#include <unistd.h>
+ 
+ #include "internal.h"
+ 
+diff --git a/src/remote/remote_driver.c b/src/remote/remote_driver.c
+index e3df27b..c2b58e6 100644
+--- a/src/remote/remote_driver.c
++++ b/src/remote/remote_driver.c
+@@ -6475,7 +6475,11 @@ done:
+ /*----------------------------------------------------------------------*/
+ 
+ static int
+-remoteAuthenticate (virConnectPtr conn, struct private_data *priv, int in_open,
++remoteAuthenticate (virConnectPtr conn, struct private_data *priv, int in_open
++#if !HAVE_SASL && !HAVE_POLKIT
++                    ATTRIBUTE_UNUSED
++#endif
++                    ,
+                     virConnectAuthPtr auth
+ #if !HAVE_SASL && !HAVE_POLKIT
+                     ATTRIBUTE_UNUSED
