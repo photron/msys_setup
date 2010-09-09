@@ -24,7 +24,8 @@ fi
 if [ ! -d $directory ]
 then
     echo unpacking $tarball ...
-    tar -xvf $tarball
+    mkdir -p $directory
+    tar -xvf $tarball -C $directory --strip-components=1
 fi
 
 pushd $directory
@@ -38,19 +39,9 @@ pushd $directory
 
 if [ ! -f configure.done ]
 then
-    CFLAGS=-I/include\ -L/lib ./configure --prefix= --enable-debug=yes \
+    CFLAGS=-I/include LDFLAGS=-L/lib ./configure --prefix= --enable-debug=yes \
                 --without-xen --without-libvirtd --without-openvz \
                 --without-lxc --without-vbox --without-python
-
-    #CFLAGS=-g\ -ggdb\ -O0\ -I/include\ -L/lib ./configure --prefix= \
-    #            --enable-debug=yes --enable-compile-warnings=error \
-    #            --without-xen --without-libvirtd --without-openvz \
-    #            --without-lxc --without-vbox
-
-    #CFLAGS=-g\ -ggdb\ -O0\ -I/include\ -L/lib ./autogen.sh --prefix= \
-    #            --enable-debug=yes --enable-compile-warnings=error \
-    #            --without-xen --without-libvirtd --without-openvz \
-    #            --without-lxc --without-vbox
     echo done > configure.done
 fi
 
