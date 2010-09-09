@@ -2,9 +2,10 @@
 
 base=/src/libcurl
 url=http://curl.haxx.se/download
-tarball=curl-7.19.7.tar.gz
-directory=curl-7.19.7
-
+#version=7.19.7
+version=7.21.1
+tarball=curl-${version}.tar.gz
+directory=curl-${version}
 
 
 mkdir -p $base
@@ -27,16 +28,21 @@ pushd $directory
 if [ ! -f gnutls.patch.applied ]
 then
     echo patching ...
-    patch -p1 < ../../curl-7.19.7-gnutls.patch
+    patch -p1 < ../../curl-${version}-gnutls.patch
     echo applied > gnutls.patch.applied
 fi
 
 if [ ! -f configure.done ]
 then
-    # with gnutls
-    CFLAGS=-I/include\ -L/lib ./configure --prefix= --disable-ldap --without-ssl --with-gnutls=
-    # with openssl
-    #CFLAGS=-I/include\ -L/lib ./configure --prefix= --disable-ldap
+    # with gnutls (LGPL), (might) report TLS package length error on runtime
+    #CFLAGS=-I/include LDFLAGS=-L/lib\ -lgcrypt ./configure --prefix= --disable-ldap --without-ssl --with-gnutls=
+
+    # with polarssl (GPL)
+    CFLAGS=-I/include LDFLAGS=-L/lib\ -lgcrypt ./configure --prefix= --disable-ldap --without-ssl --with-polarssl=
+
+    # with nss (MPL, GPL, LGPL)
+    #CFLAGS=-I/include LDFLAGS=-L/lib\ -lgcrypt ./configure --prefix= --disable-ldap --without-ssl --with-nss=
+
     echo done > configure.done
 fi
 

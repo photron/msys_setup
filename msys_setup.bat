@@ -507,8 +507,14 @@ call %tmp%\install_file.bat %base_dir%\portablexdr-4.9.1-signature.patch %msys_d
 call %tmp%\install_file.bat %base_dir%\compile_libxml2.sh                %msys_dir%\bin\compile_libxml2.sh
 call %tmp%\install_file.bat %base_dir%\libxml2-2.7.6-pthread.patch       %msys_dir%\src\libxml2-2.7.6-pthread.patch
 
+call %tmp%\install_file.bat %base_dir%\compile_polarssl.sh               %msys_dir%\bin\compile_polarssl.sh
+call %tmp%\install_file.bat %base_dir%\polarssl-0.13.1-mingw.patch       %msys_dir%\src\polarssl-0.13.1-mingw.patch
+
+call %tmp%\install_file.bat %base_dir%\compile_libnss.sh                 %msys_dir%\bin\compile_libnss.sh
+
 call %tmp%\install_file.bat %base_dir%\compile_libcurl.sh                %msys_dir%\bin\compile_libcurl.sh
 call %tmp%\install_file.bat %base_dir%\curl-7.19.7-gnutls.patch          %msys_dir%\src\curl-7.19.7-gnutls.patch
+call %tmp%\install_file.bat %base_dir%\curl-7.21.1-gnutls.patch          %msys_dir%\src\curl-7.21.1-gnutls.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.8.0.sh          %msys_dir%\bin\compile_libvirt-0.8.0.sh
 call %tmp%\install_file.bat %base_dir%\libvirt-0.8.0-mingw.patch         %msys_dir%\src\libvirt-0.8.0-mingw.patch

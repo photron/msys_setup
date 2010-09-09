@@ -1,0 +1,22 @@
+diff -ur a/Makefile b/Makefile
+--- a/Makefile	2009-07-28 20:29:34 +0000
++++ b/Makefile	2010-08-15 16:10:07 +0000
+@@ -1,5 +1,5 @@
+ 
+-DESTDIR=/usr/local
++DESTDIR=
+ PREFIX=polarssl_
+ 
+ .SILENT:
+diff -ur a/programs/Makefile b/programs/Makefile
+--- a/programs/Makefile	2010-03-18 20:11:58 +0000
++++ b/programs/Makefile	2010-08-15 16:11:25 +0000
+@@ -4,7 +4,7 @@
+ 
+ CFLAGS	= -I../include -D_FILE_OFFSET_BITS=64 -Wall -Wdeclaration-after-statement
+ OFLAGS	= -O
+-LDFLAGS	= -L../library -lpolarssl
++LDFLAGS	= -L../library -lpolarssl -lws2_32
+ 
+ APPS =	aes/aescrypt2		hash/hello		\
+ 	hash/md5sum			hash/sha1sum		\
