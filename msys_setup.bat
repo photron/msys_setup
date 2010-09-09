@@ -1,5 +1,7 @@
 @echo off
 
+set sentinel=__sentinel__
+
 rem ===========================================================================
 rem   some general variables
 rem ===========================================================================
@@ -17,7 +19,31 @@ set msys_url=http://downloads.sourceforge.net/mingw
 set mingw_url=http://downloads.sourceforge.net/mingw
 set PATH=%PATH%;%msys_dir%\bin
 
-call msys_setup_config.bat
+call msys_config.bat
+
+
+if %install_gtk% == yes set install_atk=yes
+if %install_gtk% == yes set install_pango=yes
+
+
+if %install_cario% == yes set install_freetype=yes
+if %install_cario% == yes set install_fontconfig=yes
+if %install_cario% == yes set install_libpng=yes
+
+
+
+
+
+if %install_fontconfig% == yes set install_expat=yes
+
+
+if %install_libpng% == yes set install_zlib=yes
+
+
+if %install_libvirt_scripts% == yes set install_gnutls=yes
+
+
+
 
 
 rem ===========================================================================
@@ -31,6 +57,7 @@ goto exit
 
 
 
+
 rem ===========================================================================
 rem   check for tmp directory and create if necessary
 rem ===========================================================================
@@ -39,6 +66,7 @@ if exist %tmp% goto have_tmp
 echo creating %tmp% ...
 mkdir %tmp%
 :have_tmp
+
 
 
 
@@ -67,6 +95,7 @@ echo goto done                                                      >> %out%
 echo :error                                                         >> %out%
 echo echo error: see possible messages above                        >> %out%
 echo :done                                                          >> %out%
+
 
 
 
@@ -103,6 +132,7 @@ echo :done                                                          >> %out%
 
 
 
+
 rem ===========================================================================
 rem   create install_file.bat script
 rem ===========================================================================
@@ -115,21 +145,13 @@ echo copy /y %%1 %%2                                                >> %out%
 
 
 
+
 rem ===========================================================================
-rem   download and unpack 7z using msiexec
+rem   download and unpack 7zip using msiexec
 rem ===========================================================================
 
-set msi=7z465.msi
-set zip_url=http://downloads.sourceforge.net/sevenzip
+call msys_setup_7zip.bat
 
-if exist %zip% goto have_zip
-if exist %tmp%\%msi% goto unpack_zip
-echo downloading %msi% ...
-%wget% %zip_url%/%msi% -O %tmp%\%msi%
-:unpack_zip
-echo unpacking %msi% ...
-msiexec /a %tmp%\%msi% TARGETDIR=%base_dir%\7z /qb
-:have_zip
 
 
 
@@ -137,22 +159,17 @@ rem ===========================================================================
 rem   download and unpack python using msiexec
 rem ===========================================================================
 
-rem goto skip_python
-
-set msi=python-2.6.5.msi
-set python_url=http://python.org/ftp/python/2.6.5
-
-if exist %python_dir%\python.exe goto have_python
-if exist %tmp%\%msi% goto unpack_python
-echo downloading %msi% ...
-%wget% %python_url%/%msi% -O %tmp%\%msi%
-:unpack_python
-echo unpacking %msi% ...
-msiexec /a %tmp%\%msi% TARGETDIR=%python_dir% /qb
-:have_python
+if %install_python% == yes call msys_setup_python.bat
 
 
-:skip_python
+
+rem ===========================================================================
+rem   download git
+rem ===========================================================================
+
+
+if %install_git% == yes call msys_setup_git.bat
+
 
 
 rem ===========================================================================
@@ -168,6 +185,7 @@ if exist %msys_dir%\src goto have_msys_src_dir
 echo creating %msys_dir%\src ...
 mkdir %msys_dir%\src
 :have_msys_src_dir
+
 
 
 
@@ -322,176 +340,38 @@ set C=if not exist %%F.done goto error
 
 
 
-rem ===========================================================================
-rem   download and fixup gnutls
-rem ===========================================================================
-
-call %tmp%\wget_and_unpack1.bat http://josefsson.org/gnutls4win gnutls-2.9.9.zip %msys_dir%
-
-set out=%msys_dir%\bin\fixup_gnutls.sh
-echo #!/bin/sh -e                                                                       >  %out%
-echo sed -e s:/usr/i586-mingw32msvc::g /lib/libgnutls.la ^> /lib/libgnutls.la.sed       >> %out%
-echo mv /lib/libgnutls.la.sed /lib/libgnutls.la                                         >> %out%
-echo sed -e s:/usr/i586-mingw32msvc::g /lib/libgcrypt.la ^> /lib/libgcrypt.la.sed       >> %out%
-echo mv /lib/libgcrypt.la.sed /lib/libgcrypt.la                                         >> %out%
-echo sed -e s:/usr/i586-mingw32msvc::g /lib/libgpg-error.la ^> /lib/libgpg-error.la.sed >> %out%
-echo mv /lib/libgpg-error.la.sed /lib/libgpg-error.la                                   >> %out%
-echo sed -e s:/usr/i586-mingw32msvc::g /lib/libtasn1.la ^> /lib/libtasn1.la.sed         >> %out%
-echo mv /lib/libtasn1.la.sed /lib/libtasn1.la                                           >> %out%
-
-%msys_dir%\bin\sh.exe -e %out%
-
 
 
 rem ===========================================================================
-rem   download glib
+rem   install various libs
 rem ===========================================================================
 
-if %install_glib% NEQ yes goto skip_glib
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/glib/2.24
-call %tmp%\wget_and_unpack1.bat %gnome_url% glib_2.24.0-2_win32.zip %msys_dir%
-call %tmp%\wget_and_unpack1.bat %gnome_url% glib-dev_2.24.0-2_win32.zip %msys_dir%
-:skip_glib
+call msys_setup_glib.bat
+call msys_setup_libiconv.bat
+call msys_setup_pkgconfig.bat
 
+if %install_gnutls% == yes call msys_setup_gnutls.bat
 
-rem ===========================================================================
-rem   download gtk
-rem ===========================================================================
+if %install_gtk% == yes call msys_setup_gtk.bat
 
-if %install_gtk% NEQ yes goto skip_gtk
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/gtk+/2.20
-call %tmp%\wget_and_unpack1.bat %gnome_url% gtk+_2.20.0-1_win32.zip %msys_dir%
-call %tmp%\wget_and_unpack1.bat %gnome_url% gtk+-dev_2.20.0-1_win32.zip %msys_dir%
-:skip_gtk
+if %install_atk% == yes call msys_setup_atk.bat
 
+if %install_cario% == yes call msys_setup_cairo.bat
 
-rem ===========================================================================
-rem   download atk
-rem ===========================================================================
+if %install_pango% == yes call msys_setup_pango.bat
 
-if %install_atk% NEQ yes goto skip_atk
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/atk/1.30
-call %tmp%\wget_and_unpack1.bat %gnome_url% atk_1.30.0-1_win32.zip %msys_dir%
-call %tmp%\wget_and_unpack1.bat %gnome_url% atk-dev_1.30.0-1_win32.zip %msys_dir%
-:skip_atk
+if %install_freetype% == yes call msys_setup_freetype.bat
+
+if %install_fontconfig% == yes call msys_setup_fontconfig.bat
+
+if %install_expat% == yes call msys_setup_expat.bat
+
+rem if %install_zlib% == yes call msys_setup_zlib.bat
+
+if %install_libpng% == yes call msys_setup_libpng.bat
 
 
 
-rem ===========================================================================
-rem   download cairo
-rem ===========================================================================
-
-if %install_cario% NEQ yes goto skip_cairo
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-call %tmp%\wget_and_unpack1.bat %gnome_url% cairo_1.8.10-3_win32.zip %msys_dir%
-call %tmp%\wget_and_unpack1.bat %gnome_url% cairo-dev_1.8.10-3_win32.zip %msys_dir%
-:skip_cairo
-
-
-
-rem ===========================================================================
-rem   download pango
-rem ===========================================================================
-
-if %install_pango% NEQ yes goto skip_pango
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/pango/1.28
-call %tmp%\wget_and_unpack1.bat %gnome_url% pango_1.28.0-1_win32.zip %msys_dir%
-call %tmp%\wget_and_unpack1.bat %gnome_url% pango-dev_1.28.0-1_win32.zip %msys_dir%
-:skip_pango
-
-
-
-
-rem ===========================================================================
-rem   download freetype
-rem ===========================================================================
-
-if %install_freetype% NEQ yes goto skip_freetype
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-call %tmp%\wget_and_unpack1.bat %gnome_url% freetype_2.3.12-1_win32.zip %msys_dir%
-call %tmp%\wget_and_unpack1.bat %gnome_url% freetype-dev_2.3.12-1_win32.zip %msys_dir%
-:skip_freetype
-
-
-
-
-rem ===========================================================================
-rem   download fontconfig
-rem ===========================================================================
-
-if %install_fontconfig% NEQ yes goto skip_fontconfig
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-call %tmp%\wget_and_unpack1.bat %gnome_url% fontconfig_2.8.0-2_win32.zip %msys_dir%
-call %tmp%\wget_and_unpack1.bat %gnome_url% fontconfig-dev_2.8.0-2_win32.zip %msys_dir%
-:skip_fontconfig
-
-
-
-rem ===========================================================================
-rem   download expat
-rem ===========================================================================
-
-if %install_expat% NEQ yes goto skip_expat
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-call %tmp%\wget_and_unpack1.bat %gnome_url% expat_2.0.1-1_win32.zip %msys_dir%
-call %tmp%\wget_and_unpack1.bat %gnome_url% expat-dev_2.0.1-1_win32.zip %msys_dir%
-:skip_expat
-
-
-
-rem ===========================================================================
-rem   download zlib
-rem ===========================================================================
-
-if %install_zlib% NEQ yes goto skip_zlib
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-call %tmp%\wget_and_unpack1.bat %gnome_url% zlib_1.2.4-2_win32.zip %msys_dir%
-call %tmp%\wget_and_unpack1.bat %gnome_url% zlib-dev_1.2.4-2_win32.zip %msys_dir%
-:skip_zlib
-
-
-
-rem ===========================================================================
-rem   download libpng
-rem ===========================================================================
-
-if %install_libpng% NEQ yes goto skip_libpng
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-call %tmp%\wget_and_unpack1.bat %gnome_url% libpng_1.4.0-1_win32.zip %msys_dir%
-call %tmp%\wget_and_unpack1.bat %gnome_url% libpng-dev_1.4.0-1_win32.zip %msys_dir%
-:skip_libpng
-
-
-
-rem ===========================================================================
-rem   download libiconv
-rem ===========================================================================
-
-if %install_libiconv% NEQ yes goto skip_libiconv
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-call %tmp%\wget_and_unpack1.bat %gnome_url% libiconv-1.9.1.bin.woe32.zip %msys_dir%
-:skip_libiconv
-
-
-rem ===========================================================================
-rem   download pkg-config
-rem ===========================================================================
-
-set gnome_url=http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies
-call %tmp%\wget_and_unpack1.bat %gnome_url% pkg-config_0.23-3_win32.zip %msys_dir%
-call %tmp%\wget_and_unpack1.bat %gnome_url% pkg-config-dev_0.23-3_win32.zip %msys_dir%
-
-
-
-rem ===========================================================================
-rem   download git
-rem ===========================================================================
-
-rem if %install_git% NEQ yes goto skip_git
-call %tmp%\wget_and_unpack1.bat http://msysgit.googlecode.com/files PortableGit-1.6.5.1-preview20091022.7z %git_dir%
-echo %git_dir% /git >> %msys_dir%\etc\fstab
-echo export PATH=$PATH:/git/bin > %msys_dir%\etc\profile.d\git.sh
-:skip_git
 
 
 rem ===========================================================================
