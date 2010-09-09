@@ -1,6 +1,6 @@
 if %sentinel% NEQ __sentinel__ exit
 
-call %tmp%\wget_and_unpack1.bat http://josefsson.org/gnutls4win gnutls-2.9.12.zip %msys_dir%
+call %tmp%\wget_and_unpack1.bat http://josefsson.org/gnutls4win gnutls-2.10.1.zip %msys_dir%
 
 set out=%msys_dir%\bin\fixup_gnutls.sh
 echo #!/bin/sh -e                                                                       >  %out%
