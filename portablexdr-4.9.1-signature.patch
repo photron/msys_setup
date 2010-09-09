@@ -145,9 +145,13 @@ index ba69894..a084e47 100644
  
  /* RWMJ */
  extern void xdr_free (xdrproc_t, char *);
-@@ -279,8 +288,8 @@ extern bool_t xdr_int64_t (XDR *xdrs, int64_t *uip);
+@@ -279,9 +287,12 @@ extern bool_t xdr_int64_t (XDR *xdrs, int64_t *uip);
+ #define IXDR_PUT_INT32 IXDR_PUT_LONG
  #define IXDR_GET_INT32 IXDR_GET_LONG
  
++#define IXDR_PUT_U_INT32 IXDR_PUT_U_LONG
++#define IXDR_GET_U_INT32 IXDR_GET_U_LONG
++
  #define XDR_PUTINT32(xdrs, int32p)                      \
 -        (*(xdrs)->x_ops->x_putlong)(xdrs, int32p)
 +        (*(xdrs)->x_ops->x_putlong)(xdrs, (const long *)(int32p))
