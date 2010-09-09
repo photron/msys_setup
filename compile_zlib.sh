@@ -22,14 +22,15 @@ fi
 
 pushd $directory
 
-if [ ! -f configure.done ]
-then
-    CFLAGS=-I/include\ -L/lib\ -Os ./configure --prefix=
+#if [ ! -f configure.done ]
+#then
+#    CFLAGS=-I/include\ -L/lib\ -Os ./configure --prefix=
+#
+#    echo done > configure.done
+#fi
 
-    echo done > configure.done
-fi
-
-make
+make -f win32/Makefile.gcc
+INCLUDE_PATH=/include LIBRARY_PATH=/lib make -f win32/Makefile.gcc install
 
 
 popd
