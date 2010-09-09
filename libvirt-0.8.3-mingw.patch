@@ -1,0 +1,94 @@
+diff -ur a/configure b/configure
+--- a/configure	2010-08-15 22:35:10 +0000
++++ b/configure	2010-08-15 22:57:28 +0000
+@@ -36786,6 +36786,7 @@
+     # Also set the symbol file to .def, so src/Makefile generates libvirt.def
+     # from libvirt.syms and passes libvirt.def instead of libvirt.syms to the linker
+     LIBVIRT_SYMBOL_FILE=libvirt.def
++    LIBVIRT_QEMU_SYMBOL_FILE=libvirt_qemu.def
+     # mingw's ld has the --version-script parameter, but it requires a .def file
+     # instead to work properly, therefore clear --version-script here and use
+     # -Wl, to pass the .def file to the linker
+diff -ur a/configure.ac b/configure.ac
+--- a/configure.ac	2010-08-12 19:34:12 +0000
++++ b/configure.ac	2010-08-15 22:57:04 +0000
+@@ -1866,6 +1866,7 @@
+     # Also set the symbol file to .def, so src/Makefile generates libvirt.def
+     # from libvirt.syms and passes libvirt.def instead of libvirt.syms to the linker
+     LIBVIRT_SYMBOL_FILE=libvirt.def
++    LIBVIRT_QEMU_SYMBOL_FILE=libvirt_qemu.def
+     # mingw's ld has the --version-script parameter, but it requires a .def file
+     # instead to work properly, therefore clear --version-script here and use
+     # -Wl, to pass the .def file to the linker
+diff -ur a/src/Makefile.am b/src/Makefile.am
+--- a/src/Makefile.am	2010-08-12 19:34:12 +0000
++++ b/src/Makefile.am	2010-08-15 22:57:04 +0000
+@@ -1010,7 +1010,7 @@
+   libvirt_daemon.syms		\
+   libvirt_nwfilter.syms
+ 
+-BUILT_SOURCES += libvirt.syms libvirt.def
++BUILT_SOURCES += libvirt.syms libvirt.def libvirt_qemu.def
+ 
+ libvirt.syms: libvirt_public.syms $(USED_SYM_FILES)
+ 	$(AM_V_GEN)rm -f $@-tmp $@ ; \
+@@ -1033,6 +1033,13 @@
+ 	chmod a-w $@-tmp && \
+ 	mv $@-tmp libvirt.def
+ 
++libvirt_qemu.def: $(srcdir)/libvirt_qemu.syms
++	$(AM_V_GEN)rm -f -- $@-tmp $@ ; \
++	printf 'EXPORTS\n' > $@-tmp && \
++	sed -e '/^$$/d; /#/d; /:/d; /\}/d; /\*/d; /LIBVIRT_/d; s/[ \t]*\(.*\)\;/    \1/g' $^ >> $@-tmp && \
++	chmod a-w $@-tmp && \
++	mv $@-tmp libvirt_qemu.def
++
+ # Empty source list - it merely links a bunch of convenience libs together
+ libvirt_la_SOURCES =
+ libvirt_la_LDFLAGS = $(VERSION_SCRIPT_FLAGS)$(LIBVIRT_SYMBOL_FILE) \
+diff -ur a/src/Makefile.in b/src/Makefile.in
+--- a/src/Makefile.in	2010-08-15 22:35:18 +0000
++++ b/src/Makefile.in	2010-08-15 22:57:24 +0000
+@@ -1864,7 +1864,8 @@
+ 	$(LIBVIRT_QEMU_SYMBOL_FILE) $(STORAGE_HELPER_DISK_SOURCES) \
+ 	$(LXC_CONTROLLER_SOURCES) \
+ 	$(SECURITY_DRIVER_APPARMOR_HELPER_SOURCES)
+-BUILT_SOURCES = $(ESX_DRIVER_GENERATED) libvirt.syms libvirt.def
++BUILT_SOURCES = $(ESX_DRIVER_GENERATED) libvirt.syms libvirt.def \
++	libvirt_qemu.def
+ @WITH_NETWORK_TRUE@UUID = $(shell uuidgen 2>/dev/null)
+ lib_LTLIBRARIES = libvirt.la libvirt-qemu.la
+ moddir = $(libdir)/libvirt/drivers
+@@ -5001,6 +5002,13 @@
+ 	chmod a-w $@-tmp && \
+ 	mv $@-tmp libvirt.def
+ 
++libvirt_qemu.def: $(srcdir)/libvirt_qemu.syms
++	$(AM_V_GEN)rm -f -- $@-tmp $@ ; \
++	printf 'EXPORTS\n' > $@-tmp && \
++	sed -e '/^$$/d; /#/d; /:/d; /\}/d; /\*/d; /LIBVIRT_/d; s/[ \t]*\(.*\)\;/    \1/g' $^ >> $@-tmp && \
++	chmod a-w $@-tmp && \
++	mv $@-tmp libvirt_qemu.def
++
+ install-data-local:
+ 	$(MKDIR_P) "$(DESTDIR)$(localstatedir)/cache/libvirt"
+ 	$(MKDIR_P) "$(DESTDIR)$(localstatedir)/lib/libvirt/images"
+diff --git a/daemon/Makefile.am b/daemon/Makefile.am
+index 963d64f..dbf0ac3 100644
+--- a/daemon/Makefile.am
++++ b/daemon/Makefile.am
+@@ -41,12 +41,12 @@ EXTRA_DIST =						\
+ 	$(AVAHI_SOURCES)				\
+ 	$(DAEMON_SOURCES)
+ 
+-man_MANS = libvirtd.8
+-
+ BUILT_SOURCES =
+ 
+ if WITH_LIBVIRTD
+ 
++man_MANS = libvirtd.8
++
+ sbin_PROGRAMS = libvirtd
+ 
+ confdir = $(sysconfdir)/libvirt/

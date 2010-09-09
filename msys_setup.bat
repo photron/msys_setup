@@ -402,11 +402,13 @@ call %tmp%\install_file.bat %base_dir%\libvirt-0.8.0-mingw.patch         %msys_d
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.8.1.sh          %msys_dir%\bin\compile_libvirt-0.8.1.sh
 call %tmp%\install_file.bat %base_dir%\libvirt-0.8.1-mingw.patch         %msys_dir%\src\libvirt-0.8.1-mingw.patch
 
+call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.8.3.sh          %msys_dir%\bin\compile_libvirt-0.8.3.sh
+call %tmp%\install_file.bat %base_dir%\libvirt-0.8.3-mingw.patch         %msys_dir%\src\libvirt-0.8.3-mingw.patch
+
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-git-snapshot.sh   %msys_dir%\bin\compile_libvirt-git-snapshot.sh
 
 set patch=/src/libxml2-2.7.6-pthread.patch
 %msys_dir%\bin\sh.exe -ec "sed -e s/\r.$// %patch% > %patch%.sed && mv %patch%.sed %patch%"
-
 
 :skip_libvirt_scripts
 
