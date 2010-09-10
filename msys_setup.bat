@@ -8,7 +8,8 @@ rem ===========================================================================
 
 set base_dir=%CD%
 set wget=%base_dir%\wget.exe
-set zip=%base_dir%\7z\Files\7-Zip\7z.exe
+set zip_dir=%base_dir%\7z\Files\7-Zip
+set zip=%zip_dir%\7z.exe
 set tmp=%base_dir%\tmp
 set msys_dir=%base_dir%\msys
 set mingw_dir=%base_dir%\mingw
@@ -224,10 +225,36 @@ echo cvs-1.12.13-1-msys-1.0.11-bin.tar      >> %out%
 echo m4-1.4.13-1-msys-1.0.11-bin.tar        >> %out%
 
 
+rem echo libintl-0.17-2-msys-dll-8.tar          >> %out%
+rem echo libiconv-1.13.1-2-msys-1.0.13-dll-2.tar >> %out%
+
+echo bsdcpio-2.7.1-1-msys-1.0.11-bin.tar >> %out%
+echo libarchive-2.7.1-1-msys-1.0.11-dll-2.tar >> %out%
+echo libopenssl-0.9.8k-1-msys-1.0.11-dll-098.tar >> %out%
+echo zlib-1.2.3-2-msys-1.0.13-dll.tar >> %out%
+
+
 set A=for /F %%F in (%tmp%\msys_lzma_packages.txt) do
 set B=call %tmp%\wget_and_unpack2.bat %msys_url% %%F lzma %msys_dir%
 set C=if not exist %%F.done goto error
 %A% %B%; %C%
+
+
+
+
+set out=%tmp%\msys_gz_packages.txt
+echo xz-4.999.9beta_20100401-1-msys-1.0.13-bin.tar     > %out%
+echo liblzma-4.999.9beta_20100401-1-msys-1.0.13-dll-1.tar   >> %out%
+echo libbz2-1.0.5-1-msys-1.0.11-dll-1.tar   >> %out%
+
+
+set A=for /F %%F in (%tmp%\msys_gz_packages.txt) do
+set B=call %tmp%\wget_and_unpack2.bat %msys_url% %%F gz %msys_dir%
+set C=if not exist %%F.done goto error
+%A% %B%; %C%
+
+
+
 
 
 echo %mingw_dir% /mingw                      >  %msys_dir%\etc\fstab
@@ -235,6 +262,7 @@ echo %python_dir% /python                    >> %msys_dir%\etc\fstab
 echo %python_dir%\include /include/python2.6 >> %msys_dir%\etc\fstab
 echo %python_dir%\Lib\site-packages /lib/python2.6/site-packages >> %msys_dir%\etc\fstab
 echo %go_dir% /go                            >> %msys_dir%\etc\fstab
+echo %zip_dir% /sevenzip                     >> %msys_dir%\etc\fstab
 
 
 
@@ -261,6 +289,9 @@ echo export PATH=$PATH:$GOBIN  >> %msys_dir%\etc\profile.d\go.sh
 
 
 echo export PATH=$PATH:/python >  %msys_dir%\etc\profile.d\python.sh
+
+
+echo export PATH=$PATH:/sevenzip >  %msys_dir%\etc\profile.d\sevenzip.sh
 
 
 
@@ -412,6 +443,9 @@ call %tmp%\install_file.bat %base_dir%\compile_libvirt-git-snapshot.sh   %msys_d
 
 set patch=/src/libxml2-2.7.6-pthread.patch
 %msys_dir%\bin\sh.exe -ec "sed -e s/\r.$// %patch% > %patch%.sed && mv %patch%.sed %patch%"
+
+
+call %tmp%\install_file.bat %base_dir%\download_libvirt-fedora.sh        %msys_dir%\bin\download_libvirt-fedora.sh
 
 :skip_libvirt_scripts
 

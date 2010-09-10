@@ -30,7 +30,7 @@
 
     A TLS packet with unexpected length was received
 
-  this error seems to be a known issue, but I didn't find a solution for it yet.
+  this error seems to be a known issue, but I havem't found a fix for it yet.
 
 
 - run compile_libvirt-0.8.3.sh in the MSYS shell
