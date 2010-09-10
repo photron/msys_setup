@@ -38,10 +38,13 @@ then
     #CFLAGS=-I/include LDFLAGS=-L/lib\ -lgcrypt ./configure --prefix= --disable-ldap --without-ssl --with-gnutls=
 
     # with polarssl (GPL)
-    CFLAGS=-I/include LDFLAGS=-L/lib\ -lgcrypt ./configure --prefix= --disable-ldap --without-ssl --with-polarssl=
+    CFLAGS=-I/include LDFLAGS=-L/lib ./configure --prefix= --disable-ldap --without-ssl --with-polarssl=
+
+    # with yassl (GPL, with exception for other FOSS licenses like LGPL)
+    #CFLAGS=-I/include LDFLAGS=-L/lib ./configure --prefix= --disable-ldap --without-ssl --with-yassl=
 
     # with nss (MPL, GPL, LGPL)
-    #CFLAGS=-I/include LDFLAGS=-L/lib\ -lgcrypt ./configure --prefix= --disable-ldap --without-ssl --with-nss=
+    #CFLAGS=-I/include LDFLAGS=-L/lib ./configure --prefix= --disable-ldap --without-ssl --with-nss=
 
     echo done > configure.done
 fi

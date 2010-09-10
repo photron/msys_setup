@@ -41,6 +41,7 @@ if %install_libpng% == yes set install_zlib=yes
 
 
 if %install_libvirt_scripts% == yes set install_gnutls=yes
+if %install_libvirt_scripts% == yes set install_zlib=yes
 
 
 
@@ -389,6 +390,8 @@ call %tmp%\install_file.bat %base_dir%\libxml2-2.7.6-pthread.patch       %msys_d
 
 call %tmp%\install_file.bat %base_dir%\compile_polarssl.sh               %msys_dir%\bin\compile_polarssl.sh
 call %tmp%\install_file.bat %base_dir%\polarssl-0.13.1-mingw.patch       %msys_dir%\src\polarssl-0.13.1-mingw.patch
+
+call %tmp%\install_file.bat %base_dir%\compile_yassl.sh                  %msys_dir%\bin\compile_yassl.sh
 
 call %tmp%\install_file.bat %base_dir%\compile_libnss.sh                 %msys_dir%\bin\compile_libnss.sh
 
