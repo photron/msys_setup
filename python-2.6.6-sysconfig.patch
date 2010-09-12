@@ -1,0 +1,12 @@
+--- /python/Lib/distutils/sysconfig.py	2010-09-10 17:34:08 +0000
++++ /python/Lib/distutils/sysconfig.py	2010-09-10 17:24:09 +0000
+@@ -133,7 +133,8 @@
+             if get_python_version() < "2.2":
+                 return prefix
+             else:
+-                return os.path.join(prefix, "Lib", "site-packages")
++                #return os.path.join(prefix, "Lib", "site-packages")
++                return "/python/Lib/site-packages"
+ 
+     elif os.name == "mac":
+         if plat_specific:

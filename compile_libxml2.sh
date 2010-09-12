@@ -23,21 +23,24 @@ fi
 
 pushd $directory
 
-if [ ! -f pthread.patch.applied ]
+if [ ! -f mingw.patch.applied ]
 then
     echo patching ...
-    patch -p1 < ../../libxml2-${version}-pthread.patch
-    echo applied > pthread.patch.applied
+    patch -p1 < ../../libxml2-${version}-mingw.patch
+    echo applied > mingw.patch.applied
 fi
 
 if [ ! -f configure.done ]
 then
-    ./configure --prefix= --without-python
+    ./configure --prefix= --with-python
     echo done > configure.done
 fi
 
 make
 make install
+
+# copy libxml2mod.dll to the correct place so python will find it
+cp /python/Lib/site-packages/libxml2mod.dll /python/DLLs/libxml2mod.pyd 
 
 popd
 popd

@@ -43,6 +43,10 @@ if %install_libpng% == yes set install_zlib=yes
 
 if %install_libvirt_scripts% == yes set install_gnutls=yes
 if %install_libvirt_scripts% == yes set install_zlib=yes
+if %install_libvirt_scripts% == yes set install_python=yes
+
+
+
 
 
 
@@ -288,7 +292,9 @@ echo export GOOS=windows       >> %msys_dir%\etc\profile.d\go.sh
 echo export PATH=$PATH:$GOBIN  >> %msys_dir%\etc\profile.d\go.sh
 
 
-echo export PATH=$PATH:/python >  %msys_dir%\etc\profile.d\python.sh
+
+
+
 
 
 echo export PATH=$PATH:/sevenzip >  %msys_dir%\etc\profile.d\sevenzip.sh
@@ -304,6 +310,10 @@ if exist %msys_dir%\bin\wget goto have_msys_wget
 if exist %msys_dir%\bin\wget.exe goto have_msys_wget
 call %tmp%\install_file.bat %wget% %msys_dir%\bin\wget.exe
 :have_msys_wget
+
+
+
+
 
 
 
@@ -398,7 +408,7 @@ if %install_fontconfig% == yes call msys_setup_fontconfig.bat
 
 if %install_expat% == yes call msys_setup_expat.bat
 
-rem if %install_zlib% == yes call msys_setup_zlib.bat
+if %install_zlib% == yes call msys_setup_zlib.bat
 
 if %install_libpng% == yes call msys_setup_libpng.bat
 
@@ -417,7 +427,7 @@ call %tmp%\install_file.bat %base_dir%\compile_portablexdr.sh            %msys_d
 call %tmp%\install_file.bat %base_dir%\portablexdr-4.9.1-signature.patch %msys_dir%\src\portablexdr-4.9.1-signature.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_libxml2.sh                %msys_dir%\bin\compile_libxml2.sh
-call %tmp%\install_file.bat %base_dir%\libxml2-2.7.6-pthread.patch       %msys_dir%\src\libxml2-2.7.6-pthread.patch
+call %tmp%\install_file.bat %base_dir%\libxml2-2.7.6-mingw.patch         %msys_dir%\src\libxml2-2.7.6-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_polarssl.sh               %msys_dir%\bin\compile_polarssl.sh
 call %tmp%\install_file.bat %base_dir%\polarssl-0.13.1-mingw.patch       %msys_dir%\src\polarssl-0.13.1-mingw.patch
@@ -442,6 +452,8 @@ call %tmp%\install_file.bat %base_dir%\libvirt-0.8.3-mingw.patch         %msys_d
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.8.4.sh          %msys_dir%\bin\compile_libvirt-0.8.4.sh
 
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-git-snapshot.sh   %msys_dir%\bin\compile_libvirt-git-snapshot.sh
+call %tmp%\install_file.bat %base_dir%\libvirt-git-snapshot-mingw.patch  %msys_dir%\src\libvirt-git-snapshot-mingw.patch
+
 
 set patch=/src/libxml2-2.7.6-pthread.patch
 %msys_dir%\bin\sh.exe -ec "sed -e s/\r.$// %patch% > %patch%.sed && mv %patch%.sed %patch%"
@@ -462,7 +474,6 @@ call %tmp%\install_file.bat %base_dir%\compile_zlib.sh                   %msys_d
 call %tmp%\install_file.bat %base_dir%\compile_cairo.sh                  %msys_dir%\bin\compile_cairo.sh
 
 call %tmp%\install_file.bat %base_dir%\compile_pixman.sh                 %msys_dir%\bin\compile_pixman.sh
-
 
 goto exit
 :error

@@ -1,0 +1,31 @@
+diff -ur a/python/Makefile.am b/python/Makefile.am
+--- a/python/Makefile.am	2010-05-26 22:09:50 +0000
++++ b/python/Makefile.am	2010-09-10 20:26:24 +0000
+@@ -41,9 +41,9 @@
+ libvirtmod_la_CFLAGS = $(WARN_PYTHON_CFLAGS)
+ 
+ libvirtmod_la_LDFLAGS = -module -avoid-version -shared -L$(top_builddir)/src/.libs \
+-	$(CYGWIN_EXTRA_LDFLAGS)
++	$(CYGWIN_EXTRA_LDFLAGS) $(MINGW_EXTRA_LDFLAGS) -L/python/libs
+ libvirtmod_la_LIBADD = $(mylibs) \
+-	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD)
++	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD) -lpython26
+ 
+ GENERATE = generator.py
+ API_DESC = $(top_srcdir)/docs/libvirt-api.xml $(srcdir)/libvirt-override-api.xml
+ diff -ur a/python/Makefile.in b/python/Makefile.in
+--- a/python/Makefile.in	2010-09-07 17:46:28 +0000
++++ b/python/Makefile.in	2010-09-10 21:04:52 +0000
+@@ -1118,10 +1118,10 @@
+ # need extra flags here
+ @WITH_PYTHON_TRUE@libvirtmod_la_CFLAGS = $(WARN_PYTHON_CFLAGS)
+ @WITH_PYTHON_TRUE@libvirtmod_la_LDFLAGS = -module -avoid-version -shared -L$(top_builddir)/src/.libs \
+-@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LDFLAGS)
++@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LDFLAGS) $(MINGW_EXTRA_LDFLAGS) -L/python/libs
+ 
+ @WITH_PYTHON_TRUE@libvirtmod_la_LIBADD = $(mylibs) \
+-@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD)
++@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD) -lpython26
+ 
+ @WITH_PYTHON_TRUE@GENERATE = generator.py
+ @WITH_PYTHON_TRUE@API_DESC = $(top_srcdir)/docs/libvirt-api.xml $(srcdir)/libvirt-override-api.xml
