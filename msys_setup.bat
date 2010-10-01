@@ -147,7 +147,8 @@ set out=%tmp%\install_file.bat
 echo @echo off                                                      >  %out%
 echo rem usage: src dst                                             >> %out%
 echo echo install %%1 ...                                           >> %out%
-echo copy /y %%1 %%2                                                >> %out%
+echo copy /y %%1 %%2 ^> nul                                         >> %out%
+echo if not %%ERRORLEVEL%%==0 echo ERROR: installing %%1 failed     >> %out%
 
 
 
