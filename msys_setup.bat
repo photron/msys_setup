@@ -26,6 +26,10 @@ call msys_config.bat
 
 if %install_gtk% == yes set install_atk=yes
 if %install_gtk% == yes set install_pango=yes
+if %install_gtk% == yes set install_cario=yes
+if %install_gtk% == yes set install_libpng=yes
+if %install_gtk% == yes set install_msvcr90=yes
+
 
 
 if %install_cario% == yes set install_freetype=yes
@@ -264,9 +268,6 @@ set C=if not exist %%F.done goto error
 
 
 echo %mingw_dir% /mingw                      >  %msys_dir%\etc\fstab
-echo %python_dir% /python                    >> %msys_dir%\etc\fstab
-echo %python_dir%\include /include/python2.6 >> %msys_dir%\etc\fstab
-echo %python_dir%\Lib\site-packages /lib/python2.6/site-packages >> %msys_dir%\etc\fstab
 echo %go_dir% /go                            >> %msys_dir%\etc\fstab
 echo %zip_dir% /sevenzip                     >> %msys_dir%\etc\fstab
 echo %perl_dir% /perl                        >> %msys_dir%\etc\fstab
@@ -333,29 +334,17 @@ mkdir %mingw_dir%
 :have_mingw_dir
 
 
-rem set out=%tmp%\mingw_gz_packages.txt
-rem echo gcc-core-4.4.0-mingw32-bin.tar     >  %out%
-rem echo gcc-core-4.4.0-mingw32-dll.tar     >> %out%
-rem echo gcc-c++-4.4.0-mingw32-bin.tar      >> %out%
-rem echo gcc-c++-4.4.0-mingw32-dll.tar      >> %out%
-rem echo gmp-4.2.4-mingw32-dll.tar          >> %out%
-rem echo mpfr-2.4.1-mingw32-dll.tar         >> %out%
-rem echo gdb-7.0-2-mingw32-bin.tar          >> %out%
-rem echo mingwrt-3.17-mingw32-dll.tar       >> %out%
-rem echo mingwrt-3.17-mingw32-dev.tar       >> %out%
-rem echo w32api-3.14-mingw32-dev.tar        >> %out%
-rem echo binutils-2.20-1-mingw32-bin.tar    >> %out%
-
-
-
-
-
 set out=%tmp%\mingw_gz_packages.txt
 echo mingwrt-3.18-mingw32-dll.tar          >  %out%
 echo mingwrt-3.18-mingw32-dev.tar          >> %out%
 echo w32api-3.14-mingw32-dev.tar           >> %out%
 echo gdb-7.1-2-mingw32-bin.tar             >> %out%
 echo binutils-2.20-1-mingw32-bin.tar       >> %out%
+
+echo libbz2-1.0.5-2-mingw32-dll-2.tar      >> %out%
+echo bzip2-1.0.5-2-mingw32-bin.tar         >> %out%
+
+echo pthreads-w32-2.8.0-mingw32-dll.tar       >> %out%
 
 
 set A=for /F %%F in (%tmp%\mingw_gz_packages.txt) do
@@ -374,6 +363,10 @@ echo libstdc++-4.5.0-1-mingw32-dll-6.tar   >> %out%
 echo libgmp-5.0.1-1-mingw32-dll-10.tar     >> %out%
 echo libmpc-0.8.1-1-mingw32-dll-2.tar      >> %out%
 echo libmpfr-2.4.1-1-mingw32-dll-1.tar     >> %out%
+
+rem echo libpthread-2.8.0-3-mingw32-dll-2.tar  >> %out%
+
+echo pthreads-w32-2.8.0-3-mingw32-dev.tar  >> %out%
 
 
 set A=for /F %%F in (%tmp%\mingw_lzma_packages.txt) do
@@ -418,6 +411,7 @@ if %install_zlib% == yes call msys_setup_zlib.bat
 
 if %install_libpng% == yes call msys_setup_libpng.bat
 
+if %install_msvcr90% == yes call msys_setup_msvcr90.bat
 
 
 

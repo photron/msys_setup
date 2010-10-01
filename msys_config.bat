@@ -1,4 +1,5 @@
 set install_gtk=no
+set install_msvcr90=no
 set install_intltool=no
 set install_atk=no
 set install_cario=no
@@ -10,6 +11,7 @@ set install_expat=no
 set install_git=no
 set install_python=no
 set install_gnutls=no
+set install_zlib=no
 
 set install_libvirt_scripts=yes
 
