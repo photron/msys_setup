@@ -428,6 +428,7 @@ call %tmp%\install_file.bat %base_dir%\portablexdr-4.9.1-signature.patch %msys_d
 
 call %tmp%\install_file.bat %base_dir%\compile_libxml2.sh                %msys_dir%\bin\compile_libxml2.sh
 call %tmp%\install_file.bat %base_dir%\libxml2-2.7.6-mingw.patch         %msys_dir%\src\libxml2-2.7.6-mingw.patch
+call %tmp%\install_file.bat %base_dir%\libxml2-2.7.7-mingw.patch         %msys_dir%\src\libxml2-2.7.7-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_polarssl.sh               %msys_dir%\bin\compile_polarssl.sh
 call %tmp%\install_file.bat %base_dir%\polarssl-0.13.1-mingw.patch       %msys_dir%\src\polarssl-0.13.1-mingw.patch
@@ -453,11 +454,6 @@ call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.8.4.sh          %msys_d
 
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-git-snapshot.sh   %msys_dir%\bin\compile_libvirt-git-snapshot.sh
 call %tmp%\install_file.bat %base_dir%\libvirt-git-snapshot-mingw.patch  %msys_dir%\src\libvirt-git-snapshot-mingw.patch
-
-
-set patch=/src/libxml2-2.7.6-pthread.patch
-%msys_dir%\bin\sh.exe -ec "sed -e s/\r.$// %patch% > %patch%.sed && mv %patch%.sed %patch%"
-
 
 call %tmp%\install_file.bat %base_dir%\download_libvirt-fedora.sh        %msys_dir%\bin\download_libvirt-fedora.sh
 
