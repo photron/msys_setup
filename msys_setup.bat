@@ -15,6 +15,7 @@ set msys_dir=%base_dir%\msys
 set mingw_dir=%base_dir%\mingw
 set git_dir=%base_dir%\git
 set python_dir=%base_dir%\python
+set perl_dir=%base_dir%\perl
 set go_dir=%base_dir%\go
 set msys_url=http://downloads.sourceforge.net/mingw
 set mingw_url=http://downloads.sourceforge.net/mingw
@@ -219,7 +220,7 @@ echo findutils-4.4.2-1-msys-1.0.11-bin.tar             >> %out%
 
 
 rem necessary for autogen.sh
-echo perl-5.6.1_2-1-msys-1.0.11-bin.tar     >> %out%
+rem echo perl-5.6.1_2-1-msys-1.0.11-bin.tar     >> %out%
 echo libcrypt-1.1_1-2-msys-1.0.11-dll-0.tar >> %out%
 echo autoconf-2.63-1-msys-1.0.11-bin.tar    >> %out%
 echo automake-1.11-1-msys-1.0.11-bin.tar    >> %out%
@@ -268,6 +269,7 @@ echo %python_dir%\include /include/python2.6 >> %msys_dir%\etc\fstab
 echo %python_dir%\Lib\site-packages /lib/python2.6/site-packages >> %msys_dir%\etc\fstab
 echo %go_dir% /go                            >> %msys_dir%\etc\fstab
 echo %zip_dir% /sevenzip                     >> %msys_dir%\etc\fstab
+echo %perl_dir% /perl                        >> %msys_dir%\etc\fstab
 
 
 
@@ -389,6 +391,7 @@ rem ===========================================================================
 rem   install various libs
 rem ===========================================================================
 
+call msys_setup_perl.bat
 call msys_setup_glib.bat
 call msys_setup_libiconv.bat
 call msys_setup_pkgconfig.bat
