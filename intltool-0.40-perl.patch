@@ -1,0 +1,32 @@
+--- /bin/intltool-extract	2010-09-12 09:21:55 +0000
++++ /bin/intltool-extract	2010-09-12 09:22:07 +0000
+@@ -1,4 +1,4 @@
+-#!/opt/perl/bin/perl -w 
++#!/bin/perl -w
+ # -*- Mode: perl; indent-tabs-mode: nil; c-basic-offset: 4  -*-
+ 
+ #
+--- /bin/intltool-merge	2010-09-12 09:21:55 +0000
++++ /bin/intltool-merge	2010-09-12 09:22:07 +0000
+@@ -1,4 +1,4 @@
+-#!/opt/perl/bin/perl -w
++#!/bin/perl -w
+ # -*- Mode: perl; indent-tabs-mode: nil; c-basic-offset: 4  -*-
+ 
+ #
+--- /bin/intltool-prepare	2010-09-12 09:21:55 +0000
++++ /bin/intltool-prepare	2010-09-12 09:22:07 +0000
+@@ -1,4 +1,4 @@
+-#!/opt/perl/bin/perl -w
++#!/bin/perl -w
+ # -*- Mode: perl; indent-tabs-mode: nil; c-basic-offset: 4  -*-
+ 
+ #  Intltool .desktop, .directory Prepare Tool
+--- /bin/intltool-update	2010-09-12 09:21:55 +0000
++++ /bin/intltool-update	2010-09-12 09:22:07 +0000
+@@ -1,4 +1,4 @@
+-#!/opt/perl/bin/perl -w
++#!/bin/perl -w
+ # -*- Mode: perl; indent-tabs-mode: nil; c-basic-offset: 4  -*-
+ 
+ #

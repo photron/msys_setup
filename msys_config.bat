@@ -1,4 +1,5 @@
 set install_gtk=no
+set install_intltool=no
 set install_atk=no
 set install_cario=no
 set install_pango=no

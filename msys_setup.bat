@@ -225,8 +225,8 @@ echo libcrypt-1.1_1-2-msys-1.0.11-dll-0.tar >> %out%
 echo autoconf-2.63-1-msys-1.0.11-bin.tar    >> %out%
 echo automake-1.11-1-msys-1.0.11-bin.tar    >> %out%
 echo libtool-2.2.7a-1-msys-1.0.11-bin.tar   >> %out%
-echo gettext-0.17-1-msys-1.0.11-bin.tar     >> %out%
-echo gettext-0.17-1-msys-1.0.11-dev.tar     >> %out%
+rem echo gettext-0.17-1-msys-1.0.11-bin.tar     >> %out%
+rem echo gettext-0.17-1-msys-1.0.11-dev.tar     >> %out%
 echo cvs-1.12.13-1-msys-1.0.11-bin.tar      >> %out%
 echo m4-1.4.13-1-msys-1.0.11-bin.tar        >> %out%
 
@@ -395,6 +395,8 @@ call msys_setup_perl.bat
 call msys_setup_glib.bat
 call msys_setup_libiconv.bat
 call msys_setup_pkgconfig.bat
+call msys_setup_intltool.bat
+call msys_setup_gettext.bat
 
 if %install_gnutls% == yes call msys_setup_gnutls.bat
 
