@@ -32,7 +32,9 @@ fi
 
 if [ ! -f configure.done ]
 then
-    ./configure --prefix= --with-python
+    CFLAGS=-I/include \
+    LDFLAGS=-L/lib \
+    ./configure --prefix= --with-python --with-iconv=
     echo done > configure.done
 fi
 
