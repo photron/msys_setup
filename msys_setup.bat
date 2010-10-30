@@ -24,6 +24,16 @@ set PATH=%PATH%;%msys_dir%\bin
 call msys_config.bat
 
 
+
+if %install_libvirt_scripts% == yes set install_gnutls=yes
+if %install_libvirt_scripts% == yes set install_zlib=yes
+if %install_libvirt_scripts% == yes set install_python=yes
+
+
+
+
+
+
 if %install_gtk% == yes set install_atk=yes
 if %install_gtk% == yes set install_pango=yes
 if %install_gtk% == yes set install_cario=yes
@@ -38,17 +48,11 @@ if %install_cario% == yes set install_libpng=yes
 
 
 
-
-
 if %install_fontconfig% == yes set install_expat=yes
 
 
+
 if %install_libpng% == yes set install_zlib=yes
-
-
-if %install_libvirt_scripts% == yes set install_gnutls=yes
-if %install_libvirt_scripts% == yes set install_zlib=yes
-if %install_libvirt_scripts% == yes set install_python=yes
 
 
 
@@ -159,6 +163,19 @@ echo if not %%ERRORLEVEL%%==0 echo ERROR: installing %%1 failed     >> %out%
 
 
 rem ===========================================================================
+rem   create install_file_silent.bat script
+rem ===========================================================================
+
+set out=%tmp%\install_file_silent.bat
+echo @echo off                                                      >  %out%
+echo rem usage: src dst                                             >> %out%
+echo copy /y %%1 %%2 ^> nul                                         >> %out%
+echo if not %%ERRORLEVEL%%==0 echo ERROR: installing %%1 failed     >> %out%
+
+
+
+
+rem ===========================================================================
 rem   download and unpack 7zip using msiexec
 rem ===========================================================================
 
@@ -166,21 +183,6 @@ call msys_setup_7zip.bat
 
 
 
-
-rem ===========================================================================
-rem   download and unpack python using msiexec
-rem ===========================================================================
-
-if %install_python% == yes call msys_setup_python.bat
-
-
-
-rem ===========================================================================
-rem   download git
-rem ===========================================================================
-
-
-if %install_git% == yes call msys_setup_git.bat
 
 
 
@@ -406,6 +408,10 @@ if %install_freetype% == yes call msys_setup_freetype.bat
 if %install_fontconfig% == yes call msys_setup_fontconfig.bat
 
 if %install_expat% == yes call msys_setup_expat.bat
+
+if %install_git% == yes call msys_setup_git.bat
+
+if %install_python% == yes call msys_setup_python.bat
 
 if %install_zlib% == yes call msys_setup_zlib.bat
 
