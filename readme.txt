@@ -33,7 +33,7 @@
   this error seems to be a known issue, but I haven't found a fix for it yet.
 
 
-- run compile_libvirt-0.8.4.sh in the MSYS shell
+- run compile_libvirt-0.8.5.sh in the MSYS shell
 
 
 - done
