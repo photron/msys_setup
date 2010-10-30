@@ -5,6 +5,6 @@ call %tmp%\wget_and_unpack1.bat %gnome_url% intltool_0.40.4-1_win32.zip %msys_di
 
 
 call %tmp%\install_file.bat %base_dir%\patch_intltool.sh %msys_dir%\bin\patch_intltool.sh
-call %tmp%\install_file.bat %base_dir%\intltool-0.40-perl.patch %msys_dir%\src\intltool-0.40-perl.patch
+call %tmp%\install_patch.bat intltool-0.40-perl.patch
 
 %msys_dir%\bin\sh.exe -ec patch_intltool.sh

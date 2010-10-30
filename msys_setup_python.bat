@@ -23,7 +23,7 @@ call %tmp%\install_file.bat %base_dir%\python-config    %msys_dir%\bin\python2.6
 call %tmp%\install_file.bat %base_dir%\python-config.py %msys_dir%\bin\python-config.py
 
 call %tmp%\install_file.bat %base_dir%\patch_python.sh %msys_dir%\bin\patch_python.sh
-call %tmp%\install_file.bat %base_dir%\python-2.6.6-sysconfig.patch %msys_dir%\src\python-2.6.6-sysconfig.patch
+call %tmp%\install_patch.bat python-2.6.6-sysconfig.patch
 
 
 

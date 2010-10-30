@@ -174,6 +174,20 @@ echo if not %%ERRORLEVEL%%==0 echo ERROR: installing %%1 failed     >> %out%
 
 
 
+rem ===========================================================================
+rem   create install_patch.bat script
+rem ===========================================================================
+
+set out=%tmp%\install_patch.bat
+echo @echo off                                                      >  %out%
+echo rem usage: filename                                            >> %out%
+echo echo install %base_dir%\%%1 ...                                >> %out%
+echo copy /y %base_dir%\%%1 %msys_dir%\src\%%1 ^> nul               >> %out%
+echo if not %%ERRORLEVEL%%==0 echo ERROR: installing %base_dir%\%%1 failed >> %out%
+echo %msys_dir%\bin\sh.exe -ec "sed -e 's/\r\n$//' /src/%%1 > /src/%%1.sed && mv /src/%%1.sed /src/%%1" >> %out%
+
+
+
 
 rem ===========================================================================
 rem   download and unpack 7zip using msiexec
@@ -430,38 +444,38 @@ rem ===========================================================================
 if %install_libvirt_scripts% NEQ yes goto skip_libvirt_scripts
 
 call %tmp%\install_file.bat %base_dir%\compile_portablexdr.sh            %msys_dir%\bin\compile_portablexdr.sh
-call %tmp%\install_file.bat %base_dir%\portablexdr-4.9.1-signature.patch %msys_dir%\src\portablexdr-4.9.1-signature.patch
+call %tmp%\install_patch.bat portablexdr-4.9.1-signature.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_libxml2.sh                %msys_dir%\bin\compile_libxml2.sh
-call %tmp%\install_file.bat %base_dir%\libxml2-2.7.6-mingw.patch         %msys_dir%\src\libxml2-2.7.6-mingw.patch
-call %tmp%\install_file.bat %base_dir%\libxml2-2.7.7-mingw.patch         %msys_dir%\src\libxml2-2.7.7-mingw.patch
+call %tmp%\install_patch.bat libxml2-2.7.6-mingw.patch
+call %tmp%\install_patch.bat libxml2-2.7.7-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_polarssl.sh               %msys_dir%\bin\compile_polarssl.sh
-call %tmp%\install_file.bat %base_dir%\polarssl-0.13.1-mingw.patch       %msys_dir%\src\polarssl-0.13.1-mingw.patch
+call %tmp%\install_patch.bat polarssl-0.13.1-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_yassl.sh                  %msys_dir%\bin\compile_yassl.sh
 
 call %tmp%\install_file.bat %base_dir%\compile_libnss.sh                 %msys_dir%\bin\compile_libnss.sh
 
 call %tmp%\install_file.bat %base_dir%\compile_libcurl.sh                %msys_dir%\bin\compile_libcurl.sh
-call %tmp%\install_file.bat %base_dir%\curl-7.19.7-gnutls.patch          %msys_dir%\src\curl-7.19.7-gnutls.patch
-call %tmp%\install_file.bat %base_dir%\curl-7.21.1-gnutls.patch          %msys_dir%\src\curl-7.21.1-gnutls.patch
+call %tmp%\install_patch.bat curl-7.19.7-gnutls.patch
+call %tmp%\install_patch.bat curl-7.21.1-gnutls.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_libssh2.sh                %msys_dir%\bin\compile_libssh2.sh
 
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.8.0.sh          %msys_dir%\bin\compile_libvirt-0.8.0.sh
-call %tmp%\install_file.bat %base_dir%\libvirt-0.8.0-mingw.patch         %msys_dir%\src\libvirt-0.8.0-mingw.patch
+call %tmp%\install_patch.bat libvirt-0.8.0-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.8.1.sh          %msys_dir%\bin\compile_libvirt-0.8.1.sh
-call %tmp%\install_file.bat %base_dir%\libvirt-0.8.1-mingw.patch         %msys_dir%\src\libvirt-0.8.1-mingw.patch
+call %tmp%\install_patch.bat libvirt-0.8.1-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.8.3.sh          %msys_dir%\bin\compile_libvirt-0.8.3.sh
-call %tmp%\install_file.bat %base_dir%\libvirt-0.8.3-mingw.patch         %msys_dir%\src\libvirt-0.8.3-mingw.patch
+call %tmp%\install_patch.bat libvirt-0.8.3-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.8.4.sh          %msys_dir%\bin\compile_libvirt-0.8.4.sh
 
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-git-snapshot.sh   %msys_dir%\bin\compile_libvirt-git-snapshot.sh
-call %tmp%\install_file.bat %base_dir%\libvirt-git-snapshot-mingw.patch  %msys_dir%\src\libvirt-git-snapshot-mingw.patch
+call %tmp%\install_patch.bat libvirt-git-snapshot-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\download_libvirt-fedora.sh        %msys_dir%\bin\download_libvirt-fedora.sh
 
@@ -469,7 +483,7 @@ call %tmp%\install_file.bat %base_dir%\download_libvirt-fedora.sh        %msys_d
 
 
 call %tmp%\install_file.bat %base_dir%\compile_lua.sh                    %msys_dir%\bin\compile_lua.sh
-call %tmp%\install_file.bat %base_dir%\lua-5.1.4-mingw.patch             %msys_dir%\src\lua-5.1.4-mingw.patch
+call %tmp%\install_patch.bat lua-5.1.4-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_glib.sh                   %msys_dir%\bin\compile_glib.sh
 
