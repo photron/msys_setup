@@ -34,6 +34,7 @@ then
                 --without-openvz \
                 --without-lxc \
                 --without-vbox \
+                --without-phyp \
                 --without-python
     echo done > configure.done
 fi

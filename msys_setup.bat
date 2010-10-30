@@ -441,6 +441,8 @@ call %tmp%\install_file.bat %base_dir%\compile_libcurl.sh                %msys_d
 call %tmp%\install_file.bat %base_dir%\curl-7.19.7-gnutls.patch          %msys_dir%\src\curl-7.19.7-gnutls.patch
 call %tmp%\install_file.bat %base_dir%\curl-7.21.1-gnutls.patch          %msys_dir%\src\curl-7.21.1-gnutls.patch
 
+call %tmp%\install_file.bat %base_dir%\compile_libssh2.sh                %msys_dir%\bin\compile_libssh2.sh
+
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.8.0.sh          %msys_dir%\bin\compile_libvirt-0.8.0.sh
 call %tmp%\install_file.bat %base_dir%\libvirt-0.8.0-mingw.patch         %msys_dir%\src\libvirt-0.8.0-mingw.patch
 

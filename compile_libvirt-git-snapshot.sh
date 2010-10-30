@@ -10,11 +10,6 @@ patch=libvirt-git-snapshot-mingw.patch
 mkdir -p $base
 pushd $base
 
-#if [ ! -d $directory ]
-#then
-#    git clone git://libvirt.org/libvirt.git $directory
-#fi
-
 if [ ! -f $tarball ]
 then
     echo downloading $tarball ...
@@ -48,6 +43,7 @@ then
                 --without-openvz \
                 --without-lxc \
                 --without-vbox \
+                --without-phyp \
                 --with-python
     echo done > configure.done
 fi
