@@ -31,6 +31,7 @@ if %install_libvirt_scripts% == yes set install_python=yes
 
 
 
+if %install_python% == yes set install_msvcr90=yes
 
 
 
@@ -425,13 +426,13 @@ if %install_expat% == yes call msys_setup_expat.bat
 
 if %install_git% == yes call msys_setup_git.bat
 
+if %install_msvcr90% == yes call msys_setup_msvcr90.bat
+
 if %install_python% == yes call msys_setup_python.bat
 
 if %install_zlib% == yes call msys_setup_zlib.bat
 
 if %install_libpng% == yes call msys_setup_libpng.bat
-
-if %install_msvcr90% == yes call msys_setup_msvcr90.bat
 
 
 
