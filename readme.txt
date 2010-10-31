@@ -11,6 +11,13 @@
 
 - run msys_setup.bat to download and setup an MSYS/MinGW environment
 
+  you'll see automated Windows Installer popups for 7zip and Python. the
+  script is not actually installing something to your system, it just unpacks
+  both into subdirectories for later use.
+
+  when you have UAC enabled (Windows Vista and Windows 7) then Windows will
+  ask you for confirmation, you need to allow 7zip and Python to get unpacked
+
 
 - run msys\msys.bat to open a MSYS shell
 

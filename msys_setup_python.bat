@@ -8,7 +8,7 @@ echo downloading %msi% ...
 %wget% %python_url%/%msi% -O %tmp%\%msi%
 :unpack_python
 echo unpacking %msi% ...
-msiexec /a %tmp%\%msi% TARGETDIR=%python_dir% /qn
+msiexec /a %tmp%\%msi% TARGETDIR=%python_dir% /qb
 :have_python
 
 
