@@ -5,6 +5,7 @@ url=http://libvirt.org/sources
 version=0.8.5
 tarball=libvirt-${version}.tar.gz
 directory=libvirt-${version}
+patch=libvirt-${version}-mingw.patch
 
 mkdir -p $base
 pushd $base
@@ -22,6 +23,13 @@ then
 fi
 
 pushd $directory
+
+if [ ! -f mingw.patch.applied ]
+then
+    echo patching ...
+    patch -p1 < ../../$patch
+    echo applied > mingw.patch.applied
+fi
 
 if [ ! -f configure.done ]
 then
