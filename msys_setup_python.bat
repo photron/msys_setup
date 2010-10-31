@@ -60,4 +60,4 @@ echo esac                                                                   >> %
 %msys_dir%\bin\sh.exe -ec patch_python.sh
 
 
-echo export PATH=$PATH:/python/Lib/site-packages >  %msys_dir%\etc\profile.d\python.sh
+echo export PATH=/python/Lib/site-packages:$PATH >  %msys_dir%\etc\profile.d\python.sh

@@ -19,7 +19,7 @@ set perl_dir=%base_dir%\perl
 set go_dir=%base_dir%\go
 set msys_url=http://downloads.sourceforge.net/mingw
 set mingw_url=http://downloads.sourceforge.net/mingw
-set PATH=%PATH%;%msys_dir%\bin
+set PATH=%msys_dir%\bin;%PATH%
 
 call msys_config.bat
 
@@ -310,7 +310,7 @@ echo export GOARCH=386         >  %msys_dir%\etc\profile.d\go.sh
 echo export GOBIN=/go/bin      >> %msys_dir%\etc\profile.d\go.sh
 echo export GOROOT=/go         >> %msys_dir%\etc\profile.d\go.sh
 echo export GOOS=windows       >> %msys_dir%\etc\profile.d\go.sh
-echo export PATH=$PATH:$GOBIN  >> %msys_dir%\etc\profile.d\go.sh
+echo export PATH=$GOBIN:$PATH  >> %msys_dir%\etc\profile.d\go.sh
 
 
 
@@ -318,7 +318,7 @@ echo export PATH=$PATH:$GOBIN  >> %msys_dir%\etc\profile.d\go.sh
 
 
 
-echo export PATH=$PATH:/sevenzip >  %msys_dir%\etc\profile.d\sevenzip.sh
+echo export PATH=/sevenzip:$PATH >  %msys_dir%\etc\profile.d\sevenzip.sh
 
 
 
@@ -334,8 +334,8 @@ call %tmp%\install_file.bat %wget% %msys_dir%\bin\wget.exe
 
 
 
-
-
+rem don't let coreutil's expand.exe shadow the Windows expand.exe
+if exist %msys_dir%\bin\expand.exe move %msys_dir%\bin\expand.exe %msys_dir%\bin\expand.exe.msys
 
 
 

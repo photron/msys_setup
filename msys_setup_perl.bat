@@ -27,4 +27,4 @@ echo *) echo error: too many arguments for perl wrapper script: $#              
 echo esac                                                                        >> %msys_dir%\bin\perl
 
 
-echo export PATH=$PATH:/perl/perl/site/bin:/perl/perl/bin:/perl/c/bin >  %msys_dir%\etc\profile.d\perl.sh
+echo export PATH=/perl/perl/site/bin:/perl/perl/bin:$PATH >  %msys_dir%\etc\profile.d\perl.sh

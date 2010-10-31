@@ -1,5 +1,5 @@
 if %sentinel% NEQ __sentinel__ exit
 
-call %tmp%\wget_and_unpack1.bat http://msysgit.googlecode.com/files PortableGit-1.6.5.1-preview20091022.7z %git_dir%
+call %tmp%\wget_and_unpack1.bat http://msysgit.googlecode.com/files PortableGit-1.7.3.1-preview20101002.7z %git_dir%
 echo %git_dir% /git >> %msys_dir%\etc\fstab
-echo export PATH=$PATH:/git/bin > %msys_dir%\etc\profile.d\git.sh
+echo export PATH=/git/cmd:$PATH > %msys_dir%\etc\profile.d\git.sh
