@@ -43,4 +43,10 @@
 - run compile_libvirt-0.8.5.sh in the MSYS shell
 
 
+- run gather_libvirt.sh in the MSYS shell
+
+
+- you can find all necessary files in msys\gather\libvirt now
+
+
 - done

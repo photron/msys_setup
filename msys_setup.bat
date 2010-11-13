@@ -481,6 +481,8 @@ call %tmp%\install_patch.bat libvirt-0.8.5-mingw.patch
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-git-snapshot.sh   %msys_dir%\bin\compile_libvirt-git-snapshot.sh
 call %tmp%\install_patch.bat libvirt-git-snapshot-mingw.patch
 
+call %tmp%\install_file.bat %base_dir%\gather_libvirt.sh                 %msys_dir%\bin\gather_libvirt.sh
+
 call %tmp%\install_file.bat %base_dir%\download_libvirt-fedora.sh        %msys_dir%\bin\download_libvirt-fedora.sh
 
 :skip_libvirt_scripts
