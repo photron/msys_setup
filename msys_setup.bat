@@ -49,10 +49,6 @@ if %install_cario% == yes set install_libpng=yes
 
 
 
-if %install_fontconfig% == yes set install_expat=yes
-
-
-
 if %install_libpng% == yes set install_zlib=yes
 
 
@@ -407,6 +403,7 @@ call msys_setup_libiconv.bat
 call msys_setup_pkgconfig.bat
 call msys_setup_intltool.bat
 call msys_setup_gettext.bat
+call msys_setup_expat.bat
 
 if %install_gnutls% == yes call msys_setup_gnutls.bat
 
@@ -421,8 +418,6 @@ if %install_pango% == yes call msys_setup_pango.bat
 if %install_freetype% == yes call msys_setup_freetype.bat
 
 if %install_fontconfig% == yes call msys_setup_fontconfig.bat
-
-if %install_expat% == yes call msys_setup_expat.bat
 
 if %install_git% == yes call msys_setup_git.bat
 
