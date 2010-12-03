@@ -3,9 +3,11 @@
 base=/src/libcurl
 url=http://curl.haxx.se/download
 #version=7.19.7
-version=7.21.1
+#version=7.21.1
+version=7.21.2
+revision=1
 tarball=curl-${version}.tar.gz
-directory=curl-${version}
+directory=curl-${version}-${revision}
 
 
 mkdir -p $base
@@ -20,7 +22,8 @@ fi
 if [ ! -d $directory ]
 then
     echo unpacking $tarball ...
-    tar -xvf $tarball
+    mkdir -p $directory
+    tar -xvf $tarball -C $directory --strip-components=1
 fi
 
 pushd $directory
@@ -34,17 +37,25 @@ fi
 
 if [ ! -f configure.done ]
 then
-    # with gnutls (LGPL), (might) report TLS package length error on runtime
-    #CFLAGS=-I/include LDFLAGS=-L/lib\ -lgcrypt ./configure --prefix= --disable-ldap --without-ssl --with-gnutls=
+    # with gnutls (LGPL)
+    CFLAGS=-I/include \
+    LDFLAGS=-L/lib\ -lgcrypt \
+    ./configure --prefix= --disable-ldap --without-ssl --with-gnutls=
 
     # with polarssl (GPL)
-    CFLAGS=-I/include LDFLAGS=-L/lib ./configure --prefix= --disable-ldap --without-ssl --with-polarssl=
+    #CFLAGS=-I/include \
+    #LDFLAGS=-L/lib \
+    #./configure --prefix= --disable-ldap --without-ssl --with-polarssl=
 
     # with yassl (GPL, with exception for other FOSS licenses like LGPL)
-    #CFLAGS=-I/include LDFLAGS=-L/lib ./configure --prefix= --disable-ldap --without-ssl --with-yassl=
+    #CFLAGS=-I/include \
+    #LDFLAGS=-L/lib \
+    #./configure --prefix= --disable-ldap --without-ssl --with-yassl=
 
     # with nss (MPL, GPL, LGPL)
-    #CFLAGS=-I/include LDFLAGS=-L/lib ./configure --prefix= --disable-ldap --without-ssl --with-nss=
+    #CFLAGS=-I/include\ -I/opt/nss/include \
+    #LDFLAGS=-L/lib\ -L/opt/nss/lib \
+    #./configure --prefix= --disable-ldap --without-ssl --without-gnutls --with-nss=/opt/nss
 
     echo done > configure.done
 fi

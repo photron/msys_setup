@@ -456,6 +456,7 @@ call %tmp%\install_file.bat %base_dir%\compile_libnss.sh                 %msys_d
 call %tmp%\install_file.bat %base_dir%\compile_libcurl.sh                %msys_dir%\bin\compile_libcurl.sh
 call %tmp%\install_patch.bat curl-7.19.7-gnutls.patch
 call %tmp%\install_patch.bat curl-7.21.1-gnutls.patch
+call %tmp%\install_patch.bat curl-7.21.2-gnutls.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_libssh2.sh                %msys_dir%\bin\compile_libssh2.sh
 
