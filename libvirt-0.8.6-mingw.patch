@@ -1,0 +1,198 @@
+--- a/python/Makefile.am	2010-05-26 22:09:50 +0000
++++ b/python/Makefile.am	2010-09-10 20:26:24 +0000
+@@ -41,9 +41,9 @@
+ libvirtmod_la_CFLAGS = $(WARN_PYTHON_CFLAGS)
+ 
+ libvirtmod_la_LDFLAGS = -module -avoid-version -shared -L$(top_builddir)/src/.libs \
+-	$(CYGWIN_EXTRA_LDFLAGS)
++	$(CYGWIN_EXTRA_LDFLAGS) $(MINGW_EXTRA_LDFLAGS) -L/python/libs
+ libvirtmod_la_LIBADD = $(mylibs) \
+-	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD)
++	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD) -lpython26
+ 
+ GENERATE = generator.py
+ API_DESC = $(top_srcdir)/docs/libvirt-api.xml $(srcdir)/libvirt-override-api.xml
+ diff -ur a/python/Makefile.in b/python/Makefile.in
+--- a/python/Makefile.in	2010-09-07 17:46:28 +0000
++++ b/python/Makefile.in	2010-09-10 21:04:52 +0000
+@@ -1118,10 +1118,10 @@
+ # need extra flags here
+ @WITH_PYTHON_TRUE@libvirtmod_la_CFLAGS = $(WARN_PYTHON_CFLAGS)
+ @WITH_PYTHON_TRUE@libvirtmod_la_LDFLAGS = -module -avoid-version -shared -L$(top_builddir)/src/.libs \
+-@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LDFLAGS)
++@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LDFLAGS) $(MINGW_EXTRA_LDFLAGS) -L/python/libs
+ 
+ @WITH_PYTHON_TRUE@libvirtmod_la_LIBADD = $(mylibs) \
+-@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD)
++@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD) -lpython26
+ 
+ @WITH_PYTHON_TRUE@GENERATE = generator.py
+ @WITH_PYTHON_TRUE@API_DESC = $(top_srcdir)/docs/libvirt-api.xml $(srcdir)/libvirt-override-api.xml
+--- a/src/libvirt_macvtap.syms
++++ b/src/libvirt_macvtap.syms
+@@ -1,9 +1,10 @@
+ #
++# These symbols are dependent on WITH_MACVTAP.
++#
++
+ 
+ # macvtap.h
+ delMacvtap;
+ openMacvtapTap;
+-virVMOperationTypeFromString;
+-virVMOperationTypeToString;
+ vpAssociatePortProfileId;
+ vpDisassociatePortProfileId;
+diff --git a/src/libvirt_private.syms b/src/libvirt_private.syms
+index 310d8f4..3c1c823 100644
+--- a/src/libvirt_private.syms
++++ b/src/libvirt_private.syms
+@@ -504,6 +504,11 @@ virLogStartup;
+ virLogUnlock;
+ 
+ 
++# macvtap.h
++virVMOperationTypeFromString;
++virVMOperationTypeToString;
++
++
+ # memory.h
+ virAlloc;
+ virAllocN;
+--- a/src/qemu/qemu_driver.c
++++ b/src/qemu/qemu_driver.c
+@@ -11879,6 +11879,7 @@ cleanup:
+     return ret;
+ }
+ 
++#if WITH_MACVTAP
+ static void
+ qemudVPAssociatePortProfiles(virDomainDefPtr def) {
+     int i;
+@@ -11913,6 +11914,10 @@ err_exit:
+         }
+     }
+ }
++#else /* !WITH_MACVTAP */
++static void
++qemudVPAssociatePortProfiles(virDomainDefPtr def ATTRIBUTE_UNUSED) { }
++#endif /* WITH_MACVTAP */
+ 
+ /* Finish is the third and final step, and it runs on the destination host. */
+ static virDomainPtr
+--- a/src/util/macvtap.h
++++ b/src/util/macvtap.h
+@@ -57,11 +57,6 @@ struct _virVirtualPortProfileParams {
+     } u;
+ };
+ 
+-
+-# if defined(WITH_MACVTAP)
+-
+-#  include "internal.h"
+-
+ enum virVMOperationType {
+     VIR_VM_OP_CREATE,
+     VIR_VM_OP_SAVE,
+@@ -75,6 +70,10 @@ enum virVMOperationType {
+     VIR_VM_OP_LAST
+ };
+ 
++# if WITH_MACVTAP
++
++#  include "internal.h"
++
+ int openMacvtapTap(const char *ifname,
+                    const unsigned char *macaddress,
+                    const char *linkdev,
+@@ -90,11 +89,9 @@ void delMacvtap(const char *ifname,
+                 const char *linkdev,
+                 virVirtualPortProfileParamsPtr virtPortProfile);
+ 
+-# endif /* WITH_MACVTAP */
+-
+-# define MACVTAP_MODE_PRIVATE_STR  "private"
+-# define MACVTAP_MODE_VEPA_STR     "vepa"
+-# define MACVTAP_MODE_BRIDGE_STR   "bridge"
++#  define MACVTAP_MODE_PRIVATE_STR  "private"
++#  define MACVTAP_MODE_VEPA_STR     "vepa"
++#  define MACVTAP_MODE_BRIDGE_STR   "bridge"
+ 
+ int vpAssociatePortProfileId(const char *macvtap_ifname,
+                              const unsigned char *macvtap_macaddr,
+@@ -109,6 +106,8 @@ int vpDisassociatePortProfileId(const char *macvtap_ifname,
+                                 const virVirtualPortProfileParamsPtr virtPort,
+                                 enum virVMOperationType vmOp);
+ 
++# endif /* WITH_MACVTAP */
++
+ VIR_ENUM_DECL(virVirtualPort)
+ VIR_ENUM_DECL(virVMOperation)
+ 
+--- a/src/util/macvtap.c
++++ b/src/util/macvtap.c
+@@ -27,12 +27,13 @@
+ 
+ #include <config.h>
+ 
++#include <stdint.h>
++
+ #if WITH_MACVTAP || WITH_VIRTUALPORT
+ 
+ # include <stdio.h>
+ # include <errno.h>
+ # include <fcntl.h>
+-# include <stdint.h>
+ # include <c-ctype.h>
+ # include <sys/socket.h>
+ # include <sys/ioctl.h>
+@@ -44,10 +45,15 @@
+ 
+ # include <netlink/msg.h>
+ 
+-# include "util.h"
++#endif /* WITH_MACVTAP || WITH_VIRTUALPORT */
++
++#include "util.h"
++#include "macvtap.h"
++
++#if WITH_MACVTAP || WITH_VIRTUALPORT
++
+ # include "memory.h"
+ # include "logging.h"
+-# include "macvtap.h"
+ # include "interface.h"
+ # include "conf/domain_conf.h"
+ # include "virterror_internal.h"
+@@ -77,17 +83,6 @@
+ # define LLDPAD_PID_FILE  "/var/run/lldpad.pid"
+ 
+ 
+-VIR_ENUM_IMPL(virVMOperation, VIR_VM_OP_LAST,
+-    "create",
+-    "save",
+-    "restore",
+-    "destroy",
+-    "migrate out",
+-    "migrate in start",
+-    "migrate in finish",
+-    "no-op")
+-
+-
+ enum virVirtualPortOp {
+     ASSOCIATE = 0x1,
+     DISASSOCIATE = 0x2,
+@@ -1609,3 +1604,13 @@ vpDisassociatePortProfileId(const char *macvtap_ifname,
+ }
+ 
+ #endif /* WITH_MACVTAP || WITH_VIRTUALPORT */
++
++VIR_ENUM_IMPL(virVMOperation, VIR_VM_OP_LAST,
++    "create",
++    "save",
++    "restore",
++    "destroy",
++    "migrate out",
++    "migrate in start",
++    "migrate in finish",
++    "no-op")
