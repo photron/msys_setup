@@ -24,7 +24,6 @@ cp /bin/libgpg-error-0.dll $bin
 cp /bin/libtasn1-3.dll $bin
 cp /bin/intl.dll $bin
 cp /bin/iconv.dll $bin
-cp /bin/pthreadGC2.dll $bin
 
 if test -f /bin/libcurl-4.dll; then
     cp /bin/libcurl-4.dll $bin

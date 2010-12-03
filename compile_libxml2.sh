@@ -3,8 +3,9 @@
 base=/src/libxml2
 url=ftp://xmlsoft.org/libxml2
 version=2.7.7
+revision=1
 tarball=libxml2-${version}.tar.gz
-directory=libxml2-${version}
+directory=libxml2-${version}-${revision}
 
 mkdir -p $base
 pushd $base
@@ -18,7 +19,8 @@ fi
 if [ ! -d $directory ]
 then
     echo unpacking $tarball ...
-    tar -xvf $tarball
+    mkdir -p $directory
+    tar -xvf $tarball -C $directory --strip-components=1
 fi
 
 pushd $directory
@@ -34,7 +36,7 @@ if [ ! -f configure.done ]
 then
     CFLAGS=-I/include \
     LDFLAGS=-L/lib \
-    ./configure --prefix= --with-python --with-iconv=
+    ./configure --prefix= --with-python --with-iconv= --with-threads=win32
     echo done > configure.done
 fi
 
