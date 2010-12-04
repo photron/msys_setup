@@ -1,20 +1,17 @@
 #!/bin/sh -ex
 
-base=/src/polarssl
-url=http://www.polarssl.org/code/releases
+. utilslib.sh
+
+basedir=/src/polarssl
+baseurl=http://www.polarssl.org/code/releases
 version=0.13.1
 tarball=polarssl-${version}-gpl.tgz
 directory=polarssl-${version}
 
+mkdir -p $basedir
+pushd $basedir
 
-mkdir -p $base
-pushd $base
-
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then

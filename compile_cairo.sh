@@ -1,18 +1,16 @@
 #!/bin/sh -ex
 
-base=/src/cairo
-url=http://cairographics.org/snapshots
+. utilslib.sh
+
+basedir=/src/cairo
+baseurl=http://cairographics.org/snapshots
 tarball=cairo-1.9.6.tar.gz
 directory=cairo-1.9.6
 
-mkdir -p $base
-pushd $base
+mkdir -p $basedir
+pushd $basedir
 
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then

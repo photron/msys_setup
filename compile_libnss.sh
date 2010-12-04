@@ -1,7 +1,9 @@
 #!/bin/sh -ex
 
-base=/src/libnss
-url=ftp://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_12_7_RTM/src
+. utilslib.sh
+
+basedir=/src/libnss
+baseurl=ftp://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_3_12_7_RTM/src
 version=3.12.7
 tarball=nss-${version}-with-nspr-4.8.6.tar.gz
 directory=nss-${version}
@@ -9,14 +11,10 @@ patch=nss-${version}-mingw.patch
 
 #http://ftp.mozilla.org/pub/mozilla.org/mozilla/libraries/win32/MozillaBuildSetup-1.5.exe
 
-mkdir -p $base
-pushd $base
+mkdir -p $basedir
+pushd $basedir
 
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then

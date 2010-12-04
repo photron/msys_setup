@@ -1,18 +1,16 @@
 #!/bin/sh -ex
 
-base=/src/pixman
-url=http://cairographics.org/releases/
+. utilslib.sh
+
+basedir=/src/pixman
+baseurl=http://cairographics.org/releases/
 tarball=pixman-0.18.2.tar.gz
 directory=pixman-0.18.2
 
-mkdir -p $base
-pushd $base
+mkdir -p $basedir
+pushd $basedir
 
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then

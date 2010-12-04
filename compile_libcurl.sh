@@ -1,7 +1,9 @@
 #!/bin/sh -ex
 
-base=/src/libcurl
-url=http://curl.haxx.se/download
+. utilslib.sh
+
+basedir=/src/libcurl
+baseurl=http://curl.haxx.se/download
 #version=7.19.7
 #version=7.21.1
 version=7.21.2
@@ -9,15 +11,10 @@ revision=1
 tarball=curl-${version}.tar.gz
 directory=curl-${version}-${revision}
 
+mkdir -p $basedir
+pushd $basedir
 
-mkdir -p $base
-pushd $base
-
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then

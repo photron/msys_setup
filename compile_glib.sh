@@ -1,18 +1,16 @@
 #!/bin/sh -ex
 
-base=/src/glib
-url=http://ftp.gnome.org/pub/gnome/sources/glib/2.24
+. utilslib.sh
+
+basedir=/src/glib
+baseurl=http://ftp.gnome.org/pub/gnome/sources/glib/2.24
 tarball=glib-2.24.0.tar.gz
 directory=glib-2.24.0
 
-mkdir -p $base
-pushd $base
+mkdir -p $basedir
+pushd $basedir
 
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then

@@ -1,19 +1,17 @@
 #!/bin/sh -ex
 
-base=/src/libssh2
-url=http://www.libssh2.org/download
+. utilslib.sh
+
+basedir=/src/libssh2
+baseurl=http://www.libssh2.org/download
 version=1.2.7
 tarball=libssh2-${version}.tar.gz
 directory=libssh2-${version}
 
-mkdir -p $base
-pushd $base
+mkdir -p $basedir
+pushd $basedir
 
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then

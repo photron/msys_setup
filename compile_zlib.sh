@@ -1,18 +1,17 @@
 #!/bin/sh -ex
 
-base=/src/zlib
-url=http://zlib.net
-tarball=zlib-1.2.5.tar.gz
-directory=zlib-1.2.5
+. utilslib.sh
 
-mkdir -p $base
-pushd $base
+basedir=/src/zlib
+baseurl=http://zlib.net
+version=1.2.5
+tarball=zlib-${version}.tar.gz
+directory=zlib-${version}
 
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+mkdir -p $basedir
+pushd $basedir
+
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then

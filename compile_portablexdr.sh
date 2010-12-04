@@ -1,18 +1,16 @@
 #!/bin/sh -ex
 
-base=/src/portablexdr
-url=http://people.redhat.com/~rjones/portablexdr/files/
+. utilslib.sh
+
+basedir=/src/portablexdr
+baseurl=http://people.redhat.com/~rjones/portablexdr/files/
 tarball=portablexdr-4.9.1.tar.gz
 directory=portablexdr-4.9.1
 
-mkdir -p $base
-pushd $base
+mkdir -p $basedir
+pushd $basedir
 
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then

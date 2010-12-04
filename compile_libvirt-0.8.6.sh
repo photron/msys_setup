@@ -1,20 +1,17 @@
 #!/bin/sh -ex
 
-base=/src/libvirt
-url=http://libvirt.org/sources
+. utilslib.sh
+
+basedir=/src/libvirt
+baseurl=http://libvirt.org/sources
 version=0.8.6
 tarball=libvirt-${version}.tar.gz
 directory=libvirt-${version}
-patch=libvirt-${version}-mingw.patch
 
-mkdir -p $base
-pushd $base
+mkdir -p $basedir
+pushd $basedir
 
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then
@@ -27,7 +24,7 @@ pushd $directory
 if [ ! -f mingw.patch.applied ]
 then
     echo patching ...
-    patch -p1 < ../../$patch
+    patch -p1 < ../../libvirt-${version}-mingw.patch
     echo applied > mingw.patch.applied
 fi
 
@@ -51,7 +48,7 @@ make
 make install
 
 # copy libvirtmod.dll to the correct place so python will find it
-cp /python/Lib/site-packages/libvirtmod.dll /python/DLLs/libvirtmod.pyd 
+cp /python/Lib/site-packages/libvirtmod.dll /python/DLLs/libvirtmod.pyd
 
 popd
 popd

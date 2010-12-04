@@ -1,20 +1,17 @@
 #!/bin/sh -ex
 
-base=/src/libvirt
-url=http://libvirt.org/sources
+. utilslib.sh
 
+basedir=/src/libvirt
+baseurl=http://libvirt.org/sources
 tarball=libvirt-git-snapshot.tar.gz
 directory=libvirt-git-snapshot
 patch=libvirt-git-snapshot-mingw.patch
 
-mkdir -p $base
-pushd $base
+mkdir -p $basedir
+pushd $basedir
 
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then
@@ -34,7 +31,7 @@ fi
 
 if [ ! -f configure.done ]
 then
-    CFLAGS=-I/include \
+    CFLAGS=-I/include\ -g\ -ggdb\ -O0 \
     LDFLAGS=-L/lib \
     ./configure --prefix= \
                 --enable-debug=yes \
@@ -54,7 +51,7 @@ make install
 
 
 # copy libvirtmod.dll to the correct place so python will find it
-cp /python/Lib/site-packages/libvirtmod.dll /python/DLLs/libvirtmod.pyd 
+cp /python/Lib/site-packages/libvirtmod.dll /python/DLLs/libvirtmod.pyd
 
 
 popd

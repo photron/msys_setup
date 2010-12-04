@@ -1,20 +1,18 @@
 #!/bin/sh -ex
 
-base=/src/libxml2
+. utilslib.sh
+
+basedir=/src/libxml2
 url=ftp://xmlsoft.org/libxml2
 version=2.7.7
 revision=1
 tarball=libxml2-${version}.tar.gz
 directory=libxml2-${version}-${revision}
 
-mkdir -p $base
-pushd $base
+mkdir -p $basedir
+pushd $basedir
 
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $url $tarball
 
 if [ ! -d $directory ]
 then

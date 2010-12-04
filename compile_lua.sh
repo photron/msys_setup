@@ -1,20 +1,17 @@
 #!/bin/sh -ex
 
-base=/src/lua
-url=http://www.lua.org/ftp
-tarball=lua-5.1.4.tar.gz
-directory=lua-5.1.4
+. utilslib.sh
 
+basedir=/src/lua
+baseurl=http://www.lua.org/ftp
+version=5.1.4
+tarball=lua-${version}.tar.gz
+directory=lua-${version}
 
+mkdir -p $basedir
+pushd $basedir
 
-mkdir -p $base
-pushd $base
-
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then
@@ -27,7 +24,7 @@ pushd $directory
 if [ ! -f mingw.patch.applied ]
 then
     echo patching ...
-    patch -p1 < ../../lua-5.1.4-mingw.patch
+    patch -p1 < ../../lua-${version}-mingw.patch
     echo applied > mingw.patch.applied
 fi
 

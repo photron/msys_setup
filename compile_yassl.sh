@@ -1,19 +1,17 @@
 #!/bin/sh -ex
 
-base=/src/cyassl
-url=http://www.yassl.com
+. utilslib.sh
+
+basedir=/src/cyassl
+baseurl=http://www.yassl.com
 version=2.0.0
 tarball=yassl-${version}.zip
 directory=yassl-${version}
 
-mkdir -p $base
-pushd $base
+mkdir -p $basedir
+pushd $basedir
 
-if [ ! -f $tarball ]
-then
-    echo downloading $tarball ...
-    wget $url/$tarball
-fi
+utilslib_download $baseurl $tarball
 
 if [ ! -d $directory ]
 then
