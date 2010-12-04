@@ -5,8 +5,9 @@
 basedir=/src/libvirt
 baseurl=http://libvirt.org/sources
 version=0.8.6
+revision=1
 tarball=libvirt-${version}.tar.gz
-directory=libvirt-${version}
+directory=libvirt-${version}-${revision}
 
 mkdir -p $basedir
 pushd $basedir
@@ -16,7 +17,8 @@ utilslib_download $baseurl $tarball
 if [ ! -d $directory ]
 then
     echo unpacking $tarball ...
-    tar -xvf $tarball
+    mkdir -p $directory
+    tar -xvf $tarball -C $directory --strip-components=1
 fi
 
 pushd $directory
