@@ -83,6 +83,35 @@ mkdir %tmp%
 
 
 rem ===========================================================================
+rem   create wget_and_install.bat script
+rem ===========================================================================
+
+set out=%tmp%\wget_and_install.bat
+echo @echo off                                                      >  %out%
+echo rem usage: baseurl filename dstdir                             >> %out%
+echo set src=%%1/%%2                                                >> %out%
+echo set dst=%%tmp%%\%%2                                            >> %out%
+echo set part=%%tmp%%\%%2.part                                      >> %out%
+echo set done=%%tmp%%\%%2.done                                      >> %out%
+echo if exist %%dst%% goto unpack                                   >> %out%
+echo echo downloading %%2 ...                                       >> %out%
+echo if exist %%part%% del %%part%%                                 >> %out%
+echo %%wget%% %%src%% -O %%part%% ^&^& ren %%part%% %%2             >> %out%
+echo if not exist %%dst%% goto error                                >> %out%
+echo :unpack                                                        >> %out%
+echo if exist %%done%% goto done                                    >> %out%
+echo echo unpacking %%2 ...                                         >> %out%
+echo msiexec /a %%dst%% TARGETDIR=%%3 /qb ^&^& echo done ^> %%done%% >> %out%
+echo if not exist %%done%% goto error                               >> %out%
+echo goto done                                                      >> %out%
+echo :error                                                         >> %out%
+echo echo error: see possible messages above                        >> %out%
+echo :done                                                          >> %out%
+
+
+
+
+rem ===========================================================================
 rem   create wget_and_unpack1.bat script
 rem ===========================================================================
 

@@ -1,15 +1,6 @@
 if %sentinel% NEQ __sentinel__ exit
 
-set msi=python-2.6.6.msi
-set python_url=http://python.org/ftp/python/2.6.6
-if exist %python_dir%\python.exe goto have_python
-if exist %tmp%\%msi% goto unpack_python
-echo downloading %msi% ...
-%wget% %python_url%/%msi% -O %tmp%\%msi%
-:unpack_python
-echo unpacking %msi% ...
-msiexec /a %tmp%\%msi% TARGETDIR=%python_dir% /qb
-:have_python
+call %tmp%\wget_and_install.bat http://python.org/ftp/python/2.6.6 python-2.6.6.msi %python_dir%
 
 
 set crt_dir=%python_dir%\Microsoft.VC90.CRT
