@@ -4,8 +4,10 @@
 
 basedir=/src/portablexdr
 baseurl=http://people.redhat.com/~rjones/portablexdr/files/
-tarball=portablexdr-4.9.1.tar.gz
-directory=portablexdr-4.9.1
+version=4.9.1
+revision=1
+tarball=portablexdr-${version}.tar.gz
+directory=portablexdr-${version}-${revision}
 
 mkdir -p $basedir
 pushd $basedir
@@ -15,7 +17,8 @@ utilslib_download $baseurl $tarball
 if [ ! -d $directory ]
 then
     echo unpacking $tarball ...
-    tar -xvf $tarball
+    mkdir -p $directory
+    tar -xvf $tarball -C $directory --strip-components=1
 fi
 
 pushd $directory
@@ -23,7 +26,7 @@ pushd $directory
 if [ ! -f signature.patch.applied ]
 then
     echo patching ...
-    patch -p1 < ../../portablexdr-4.9.1-signature.patch
+    patch -p1 < ../../portablexdr-${version}-signature.patch
     echo applied > signature.patch.applied
 fi
 

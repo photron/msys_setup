@@ -1,3 +1,9 @@
+--- a/rpc/rpc.h	2009-01-12 15:55:23 +0000
++++ b/rpc/rpc.h	2010-12-22 11:46:18 +0000
+@@ -1,3 +1,2 @@
+-#include "config.h"
+ #include <rpc/types.h>
+ #include <rpc/xdr.h>
 diff --git a/rpc/xdr.h b/rpc/xdr.h
 index ba69894..a084e47 100644
 --- a/rpc/xdr.h
