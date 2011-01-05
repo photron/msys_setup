@@ -31,7 +31,7 @@
 - if you need VMware ESX support run compile_libcurl.sh in the MSYS shell
 
 
-- run compile_libvirt-0.8.6.sh in the MSYS shell
+- run compile_libvirt-0.8.7.sh in the MSYS shell
 
 
 - run gather_libvirt.sh in the MSYS shell
