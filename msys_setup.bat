@@ -515,6 +515,7 @@ call %tmp%\install_file.bat %base_dir%\compile_libvirt-git-snapshot.sh   %msys_d
 call %tmp%\install_patch.bat libvirt-git-snapshot-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\gather_libvirt.sh                 %msys_dir%\bin\gather_libvirt.sh
+call %tmp%\install_file.bat %base_dir%\rewriteimports.c                  %msys_dir%\src\rewriteimports.c
 
 call %tmp%\install_file.bat %base_dir%\download_libvirt-fedora.sh        %msys_dir%\bin\download_libvirt-fedora.sh
 

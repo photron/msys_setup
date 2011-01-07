@@ -41,3 +41,48 @@ cp -R /include/libvirt $include
 # python
 cp /python/Lib/site-packages/libvirt.py $python
 cp /python/Lib/site-packages/libvirtmod.dll $python/libvirtmod.pyd
+
+# rewrite imports
+pushd $bin
+
+gcc /src/rewriteimports.c -o rewriteimports.exe
+
+imports="libportablexdr-0.dll
+libxml2-2.dll
+zlib1.dll
+libgnutls-26.dll
+libgcrypt-11.dll
+libgpg-error-0.dll
+libtasn1-3.dll
+intl.dll
+iconv.dll
+libcurl-4.dll"
+
+rewriteimports virsh.exe $imports
+rewriteimports libvirt-0.dll $imports
+rewriteimports libxml2-2.dll $imports
+rewriteimports libgcrypt-11.dll $imports
+rewriteimports libgnutls-26.dll $imports
+rewriteimports libgcrypt-11.dll $imports
+
+if test -f libcurl-4.dll; then
+   rewriteimports libcurl-4.dll $imports
+fi
+
+rm rewriteimports.exe
+
+mv libportablexdr-0.dll _lv_libportablexdr-0.dll
+mv libxml2-2.dll _lv_libxml2-2.dll
+mv zlib1.dll _lv_zlib1.dll
+mv libgnutls-26.dll _lv_libgnutls-26.dll
+mv libgcrypt-11.dll _lv_libgcrypt-11.dll
+mv libgpg-error-0.dll _lv_libgpg-error-0.dll
+mv libtasn1-3.dll _lv_libtasn1-3.dll
+mv intl.dll _lv_intl.dll
+mv iconv.dll _lv_iconv.dll
+
+if test -f libcurl-4.dll; then
+    mv libcurl-4.dll _lv_libcurl-4.dll
+fi
+
+popd
