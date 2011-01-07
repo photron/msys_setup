@@ -39,7 +39,6 @@ then
                 --without-libvirtd \
                 --without-openvz \
                 --without-lxc \
-                --without-vbox \
                 --without-phyp \
                 --with-python
     echo done > configure.done
