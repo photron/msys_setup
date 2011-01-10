@@ -156,3 +156,16 @@ Make the remote driver use TLS certificates from %APPDATA%\libvirt\pki\ instead 
 +# endif
  
  #endif /* __VIR_REMOTE_INTERNAL_H__ */
+diff --git a/src/vbox/vbox_MSCOMGlue.c b/src/vbox/vbox_MSCOMGlue.c
+index e6a886f..be0ec34 100644
+--- a/src/vbox/vbox_MSCOMGlue.c
++++ b/src/vbox/vbox_MSCOMGlue.c
+@@ -356,8 +356,6 @@ vboxLookupVersionInRegistry(void)
+         status = RegOpenKeyEx(HKEY_LOCAL_MACHINE, keyName, 0, KEY_READ, &key);
+ 
+         if (status != ERROR_SUCCESS) {
+-            VIR_ERROR(_("Could not open registry key '%s' nor '%s'"),
+-                      VBOX_REGKEY_ORACLE, VBOX_REGKEY_SUN);
+             return -1;
+         }
+     }
