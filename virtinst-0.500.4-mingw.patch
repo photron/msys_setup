@@ -1,0 +1,11 @@
+--- a/setup.py	2010-09-10 22:03:28 +0000
++++ b/setup.py	2010-09-10 21:58:20 +0000
+@@ -314,7 +314,7 @@
+         dirlist = os.listdir("build/po")
+         for lang in dirlist:
+             if lang != "." and lang != "..":
+-                install_path = "share/locale/%s/LC_MESSAGES/" % lang
++                install_path = "share/locale/%s/LC_MESSAGES" % lang
+ 
+                 src_path = "build/po/%s/virtinst.mo" % lang
+ 

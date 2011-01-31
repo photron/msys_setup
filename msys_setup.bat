@@ -532,6 +532,9 @@ call %tmp%\install_patch.bat pycurl-7.19.0-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_urlgrabber.sh             %msys_dir%\bin\compile_urlgrabber.sh
 
+call %tmp%\install_file.bat %base_dir%\compile_virt-install.sh           %msys_dir%\bin\compile_virt-install.sh
+call %tmp%\install_patch.bat virtinst-0.500.4-mingw.patch
+
 :skip_virtmanager_scripts
 
 
