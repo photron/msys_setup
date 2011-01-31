@@ -522,6 +522,20 @@ call %tmp%\install_file.bat %base_dir%\download_libvirt-fedora.sh        %msys_d
 :skip_libvirt_scripts
 
 
+
+
+
+if %install_virtmanager_scripts% NEQ yes goto skip_virtmanager_scripts
+
+call %tmp%\install_file.bat %base_dir%\compile_pycurl.sh                 %msys_dir%\bin\compile_pycurl.sh
+call %tmp%\install_patch.bat pycurl-7.19.0-mingw.patch
+
+:skip_virtmanager_scripts
+
+
+
+
+
 call %tmp%\install_file.bat %base_dir%\compile_lua.sh                    %msys_dir%\bin\compile_lua.sh
 call %tmp%\install_patch.bat lua-5.1.4-mingw.patch
 

@@ -14,3 +14,5 @@ set install_zlib=no
 
 set install_libvirt_scripts=yes
 
+set install_virtmanager_scripts=yes
+
