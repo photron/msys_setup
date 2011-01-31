@@ -530,6 +530,8 @@ if %install_virtmanager_scripts% NEQ yes goto skip_virtmanager_scripts
 call %tmp%\install_file.bat %base_dir%\compile_pycurl.sh                 %msys_dir%\bin\compile_pycurl.sh
 call %tmp%\install_patch.bat pycurl-7.19.0-mingw.patch
 
+call %tmp%\install_file.bat %base_dir%\compile_urlgrabber.sh             %msys_dir%\bin\compile_urlgrabber.sh
+
 :skip_virtmanager_scripts
 
 

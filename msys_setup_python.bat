@@ -45,10 +45,22 @@ echo 6) exec /python/python "$1" "$2" "$3" "$4" "$5" "$6" ;;                >> %
 echo 7) exec /python/python "$1" "$2" "$3" "$4" "$5" "$6" "$7" ;;           >> %msys_dir%\bin\python
 echo 8) exec /python/python "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" ;;      >> %msys_dir%\bin\python
 echo 9) exec /python/python "$1" "$2" "$3" "$4" "$5" "$6" "$7" "$8" "$9" ;; >> %msys_dir%\bin\python
-echo *) echo error: too many arguments for python wrapper script            >> %msys_dir%\bin\python
+echo *) exec /python/python "$@" ;;                                         >> %msys_dir%\bin\python
 echo esac                                                                   >> %msys_dir%\bin\python
+
+
 
 %msys_dir%\bin\sh.exe -ec patch_python.sh
 
 
 echo export PATH=/python/Lib/site-packages:$PATH >  %msys_dir%\etc\profile.d\python.sh
+
+
+
+rem add dummy/fake stuff for virt-manager
+
+set site_dir=%python_dir%\Lib\site-packages
+
+call %tmp%\install_file.bat %base_dir%\python-fcntl.py %site_dir%\fcntl.py
+call %tmp%\install_file.bat %base_dir%\python-pwd.py %site_dir%\pwd.py
+call %tmp%\install_file.bat %base_dir%\python-termios.py %site_dir%\termios.py
