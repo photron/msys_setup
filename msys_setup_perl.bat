@@ -27,4 +27,12 @@ echo *) echo error: too many arguments for perl wrapper script: $#              
 echo esac                                                                        >> %msys_dir%\bin\perl
 
 
-echo export PATH=/perl/perl/site/bin:/perl/perl/bin:$PATH >  %msys_dir%\etc\profile.d\perl.sh
+echo export PATH=/perl/perl/site/bin:/perl/perl/bin:$PATH:/perl/c/bin >  %msys_dir%\etc\profile.d\perl.sh
+
+
+
+set perl_url=http://cpansearch.perl.org/src/MAKAMAKA/Text-CSV-1.20/lib/Text
+
+if not exist %perl_dir%\perl\site\lib\Text mkdir %perl_dir%\perl\site\lib\Text
+call %tmp%\wget_and_copy.bat %perl_url% CSV.pm %perl_dir%\perl\site\lib\Text
+call %tmp%\wget_and_copy.bat %perl_url% CSV_PP.pm %perl_dir%\perl\site\lib\Text

@@ -1,0 +1,52 @@
+--- a/src/Makefile.am	2010-09-17 21:35:51 +0000
++++ b/src/Makefile.am	2010-09-17 21:36:07 +0000
+@@ -198,10 +198,10 @@
+ if WITH_PYTHON
+ pyexec_LTLIBRARIES = gtkvnc.la
+ 
+-gtkvnc_la_LIBADD = libgtk-vnc-$(GTK_VNC_API_VERSION).la @PYGTK_LIBS@
++gtkvnc_la_LIBADD = libgtk-vnc-$(GTK_VNC_API_VERSION).la @PYGTK_LIBS@ -lpython26
+ gtkvnc_la_CFLAGS = @GTK_CFLAGS@ @PYTHON_INCLUDES@ \
+ 		   @PYGTK_CFLAGS@ @WARNING_PYTHON_CFLAGS@
+-gtkvnc_la_LDFLAGS = -module -avoid-version -fPIC
++gtkvnc_la_LDFLAGS = -module -avoid-version -fPIC -no-undefined -L/python/libs
+ gtkvnc_la_SOURCES = vncmodule.c vncmodule.defs.c
+ 
+ CODEGENDIR = $(shell pkg-config --variable=codegendir pygtk-2.0)
+--- a/src/Makefile.in	2010-09-17 21:36:31 +0000
++++ b/src/Makefile.in	2010-09-17 21:36:39 +0000
+@@ -732,11 +732,11 @@
+ 	vncdisplayenums.c vncconnectionenums.h vncconnectionenums.c \
+ 	$(am__append_8) $(am__append_11)
+ @WITH_PYTHON_TRUE@pyexec_LTLIBRARIES = gtkvnc.la
+-@WITH_PYTHON_TRUE@gtkvnc_la_LIBADD = libgtk-vnc-$(GTK_VNC_API_VERSION).la @PYGTK_LIBS@
++@WITH_PYTHON_TRUE@gtkvnc_la_LIBADD = libgtk-vnc-$(GTK_VNC_API_VERSION).la @PYGTK_LIBS@ -lpython26
+ @WITH_PYTHON_TRUE@gtkvnc_la_CFLAGS = @GTK_CFLAGS@ @PYTHON_INCLUDES@ \
+ @WITH_PYTHON_TRUE@		   @PYGTK_CFLAGS@ @WARNING_PYTHON_CFLAGS@
+ 
+-@WITH_PYTHON_TRUE@gtkvnc_la_LDFLAGS = -module -avoid-version -fPIC
++@WITH_PYTHON_TRUE@gtkvnc_la_LDFLAGS = -module -avoid-version -fPIC -no-undefined -L/python/libs
+ @WITH_PYTHON_TRUE@gtkvnc_la_SOURCES = vncmodule.c vncmodule.defs.c
+ @WITH_PYTHON_TRUE@CODEGENDIR = $(shell pkg-config --variable=codegendir pygtk-2.0)
+ @WITH_PYTHON_TRUE@DEFSDIR = $(shell pkg-config --variable=defsdir pygtk-2.0)
+--- a/tools/Makefile.am	2010-09-17 22:47:27 +0000
++++ b/tools/Makefile.am	2010-09-17 22:47:44 +0000
+@@ -8,7 +8,7 @@
+ CLEANFILES = $(man1_MANS)
+ 
+ gvnccapture.1: gvnccapture.c
+-	$(AM_V_GEN)$(POD2MAN) --name 'gvnccapture' $< $@
++	$(AM_V_GEN)$(POD2MAN) $< $@
+ 
+ gvnccapture_SOURCES = gvnccapture.c
+ gvnccapture_LDADD = \
+--- a/tools/Makefile.in	2010-09-17 22:47:20 +0000
++++ b/tools/Makefile.in	2010-09-17 22:47:45 +0000
+@@ -946,7 +946,7 @@
+ 
+ 
+ gvnccapture.1: gvnccapture.c
+-	$(AM_V_GEN)$(POD2MAN) --name 'gvnccapture' $< $@
++	$(AM_V_GEN)$(POD2MAN) $< $@
+ 
+ -include $(top_srcdir)/git.mk

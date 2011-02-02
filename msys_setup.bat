@@ -35,6 +35,10 @@ if %install_python% == yes set install_msvcr90=yes
 
 
 
+if %install_virtmanager_scripts% == yes set install_gtk=yes
+
+
+
 if %install_gtk% == yes set install_atk=yes
 if %install_gtk% == yes set install_pango=yes
 if %install_gtk% == yes set install_cario=yes
@@ -50,9 +54,6 @@ if %install_cario% == yes set install_libpng=yes
 
 
 if %install_libpng% == yes set install_zlib=yes
-
-
-
 
 
 
@@ -78,6 +79,34 @@ if exist %tmp% goto have_tmp
 echo creating %tmp% ...
 mkdir %tmp%
 :have_tmp
+
+
+
+rem ===========================================================================
+rem   create wget_and_copy.bat script
+rem ===========================================================================
+
+set out=%tmp%\wget_and_copy.bat
+echo @echo off                                                      >  %out%
+echo rem usage: baseurl filename dstdir                             >> %out%
+echo set src=%%1/%%2                                                >> %out%
+echo set dst=%%tmp%%\%%2                                            >> %out%
+echo set part=%%tmp%%\%%2.part                                      >> %out%
+echo set done=%%tmp%%\%%2.done                                      >> %out%
+echo if exist %%dst%% goto copy                                     >> %out%
+echo echo downloading %%2 ...                                       >> %out%
+echo if exist %%part%% del %%part%%                                 >> %out%
+echo %%wget%% %%src%% -O %%part%% ^&^& ren %%part%% %%2             >> %out%
+echo if not exist %%dst%% goto error                                >> %out%
+echo :copy                                                          >> %out%
+echo if exist %%done%% goto done                                    >> %out%
+echo echo copying %%2 ...                                           >> %out%
+echo copy /y %%dst%% %%3 ^> nul ^&^& echo done ^> %%done%%          >> %out%
+echo if not exist %%done%% goto error                               >> %out%
+echo goto done                                                      >> %out%
+echo :error                                                         >> %out%
+echo echo error: see possible messages above                        >> %out%
+echo :done                                                          >> %out%
 
 
 
@@ -450,13 +479,13 @@ if %install_fontconfig% == yes call msys_setup_fontconfig.bat
 
 if %install_git% == yes call msys_setup_git.bat
 
-if %install_msvcr90% == yes call msys_setup_msvcr90.bat
-
 if %install_python% == yes call msys_setup_python.bat
 
 if %install_zlib% == yes call msys_setup_zlib.bat
 
 if %install_libpng% == yes call msys_setup_libpng.bat
+
+if %install_msvcr90% == yes call msys_setup_msvcr90.bat
 
 
 
@@ -534,6 +563,9 @@ call %tmp%\install_file.bat %base_dir%\compile_urlgrabber.sh             %msys_d
 
 call %tmp%\install_file.bat %base_dir%\compile_virt-install.sh           %msys_dir%\bin\compile_virt-install.sh
 call %tmp%\install_patch.bat virtinst-0.500.4-mingw.patch
+
+call %tmp%\install_file.bat %base_dir%\compile_gtk-vnc.sh                %msys_dir%\bin\compile_gtk-vnc.sh
+call %tmp%\install_patch.bat gtk-vnc-0.4.2-mingw.patch
 
 :skip_virtmanager_scripts
 
