@@ -1,0 +1,43 @@
+--- a/src/virt-manager.py.in	2010-09-19 16:45:08 +0000
++++ b/src/virt-manager.py.in	2010-09-19 16:45:30 +0000
+@@ -50,7 +50,7 @@
+ virtinst_version = tuple([ int(num) for num in virtinst_str.split('.')])
+ 
+ gconf_dir = "/apps/" + appname
+-asset_dir = "::ASSETDIR::"
++asset_dir = sys.prefix.replace("\\", "/") + "/../msys" + "::ASSETDIR::"
+ glade_dir = asset_dir
+ icon_dir = asset_dir + "/pixmaps"
+ pylib_dir = "::PYLIBDIR::"
+@@ -347,8 +347,8 @@
+     from virtManager.engine import vmmEngine
+     from virtManager.remote import vmmRemote
+ 
+-    gtk.window_set_default_icon_from_file(icon_dir + "/" +
+-                                          appname + "-icon.svg")
++    #gtk.window_set_default_icon_from_file(icon_dir + "/" +
++    #                                      appname + "-icon.svg")
+ 
+     if options.show and options.uri==None:
+         raise OptionValueError("can't use --show-* options without --connect")
+--- a/man/Makefile.in	2010-09-19 16:28:32 +0000
++++ b/man/Makefile.in	2010-09-19 16:27:41 +0000
+@@ -424,7 +424,7 @@
+ 
+ 
+ %.1: %.pod
+-	pod2man --release="" --center="Virtual Machine Manager" $< > $@
++	pod2man --center="Virtual Machine Manager" $< > $@
+ 
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+ # Otherwise a system limit (for SysV at least) may be exceeded.
+--- a/man/Makefile.am	2010-09-19 16:28:41 +0000
++++ b/man/Makefile.am	2010-09-19 16:27:41 +0000
+@@ -4,6 +4,6 @@
+ EXTRA_DIST = virt-manager.pod
+ 
+ %.1: %.pod
+-	pod2man --release="" --center="Virtual Machine Manager" $< > $@
++	pod2man --center="Virtual Machine Manager" $< > $@
+ 
+ CLEANFILES = virt-manager.1

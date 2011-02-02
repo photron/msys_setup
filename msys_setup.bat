@@ -567,6 +567,9 @@ call %tmp%\install_patch.bat virtinst-0.500.4-mingw.patch
 call %tmp%\install_file.bat %base_dir%\compile_gtk-vnc.sh                %msys_dir%\bin\compile_gtk-vnc.sh
 call %tmp%\install_patch.bat gtk-vnc-0.4.2-mingw.patch
 
+call %tmp%\install_file.bat %base_dir%\compile_virt-manager.sh           %msys_dir%\bin\compile_virt-manager.sh
+call %tmp%\install_patch.bat virt-manager-0.8.5-mingw.patch
+
 :skip_virtmanager_scripts
 
 

@@ -62,5 +62,13 @@ rem add dummy/fake stuff for virt-manager
 set site_dir=%python_dir%\Lib\site-packages
 
 call %tmp%\install_file.bat %base_dir%\python-fcntl.py %site_dir%\fcntl.py
+call %tmp%\install_file.bat %base_dir%\python-gconf.py %site_dir%\gconf.py
 call %tmp%\install_file.bat %base_dir%\python-pwd.py %site_dir%\pwd.py
 call %tmp%\install_file.bat %base_dir%\python-termios.py %site_dir%\termios.py
+call %tmp%\install_file.bat %base_dir%\python-vte.py %site_dir%\vte.py
+
+if not exist %site_dir%\dbus mkdir %site_dir%\dbus
+
+call %tmp%\install_file.bat %base_dir%\python-dbus-__init__.py %site_dir%\dbus\__init__.py
+call %tmp%\install_file.bat %base_dir%\python-dbus-glib.py %site_dir%\dbus\glib.py
+call %tmp%\install_file.bat %base_dir%\python-dbus-service.py %site_dir%\dbus\service.py
