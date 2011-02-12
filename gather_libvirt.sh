@@ -4,12 +4,14 @@ dst=/gather/libvirt
 bin=$dst/bin
 lib=$dst/lib
 include=$dst/include
-python=$dst/python
+python26=$dst/python26
+python27=$dst/python27
 
 mkdir -p $bin
 mkdir -p $lib
 mkdir -p $include
-mkdir -p $python
+mkdir -p $python26
+mkdir -p $python27
 
 # bin
 cp /bin/virsh.exe $bin
@@ -38,9 +40,21 @@ cp /lib/libvirt-qemu.dll.a $lib
 # include
 cp -R /include/libvirt $include
 
-# python
-cp /python/Lib/site-packages/libvirt.py $python
-cp /python/Lib/site-packages/libvirtmod.dll $python/libvirtmod.pyd
+# python26
+cp /python/Lib/site-packages/libvirt.py $python26
+cp /python/Lib/site-packages/libvirtmod.dll $python26/libvirtmod.pyd
+
+# python27
+cp /python/Lib/site-packages/libvirt.py $python27
+cp /python/Lib/site-packages/libvirtmod.dll $python27/libvirtmod.pyd
+
+pushd $python27
+
+gcc /src/rewritepython.c -o rewritepython.exe
+rewritepython $python27/libvirtmod.pyd
+rm rewritepython.exe
+
+popd
 
 # rewrite imports
 pushd $bin
