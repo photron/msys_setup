@@ -244,6 +244,23 @@ echo %msys_dir%\bin\sh.exe -ec "sed -e 's/\r\n$//' /src/%%1 > /src/%%1.sed && mv
 
 
 
+
+
+rem ===========================================================================
+rem   create remove_file_silent.bat script
+rem ===========================================================================
+
+set out=%tmp%\remove_file_silent.bat
+echo @echo off                                                      >  %out%
+echo rem usage: path                                                >> %out%
+echo if exist %%1 del %%1 ^> nul                                    >> %out%
+echo if not %%ERRORLEVEL%%==0 echo ERROR: removing %%1 failed       >> %out%
+
+
+
+
+
+
 rem ===========================================================================
 rem   download and unpack 7zip using msiexec
 rem ===========================================================================
@@ -295,24 +312,19 @@ echo findutils-4.4.2-1-msys-1.0.11-bin.tar             >> %out%
 
 
 rem necessary for autogen.sh
-rem echo perl-5.6.1_2-1-msys-1.0.11-bin.tar     >> %out%
 echo libcrypt-1.1_1-2-msys-1.0.11-dll-0.tar >> %out%
 echo autoconf-2.63-1-msys-1.0.11-bin.tar    >> %out%
 echo automake-1.11-1-msys-1.0.11-bin.tar    >> %out%
 echo libtool-2.2.7a-1-msys-1.0.11-bin.tar   >> %out%
-rem echo gettext-0.17-1-msys-1.0.11-bin.tar     >> %out%
-rem echo gettext-0.17-1-msys-1.0.11-dev.tar     >> %out%
 echo cvs-1.12.13-1-msys-1.0.11-bin.tar      >> %out%
 echo m4-1.4.13-1-msys-1.0.11-bin.tar        >> %out%
 
 
-rem echo libintl-0.17-2-msys-dll-8.tar          >> %out%
-rem echo libiconv-1.13.1-2-msys-1.0.13-dll-2.tar >> %out%
 
-echo bsdcpio-2.7.1-1-msys-1.0.11-bin.tar >> %out%
-echo libarchive-2.7.1-1-msys-1.0.11-dll-2.tar >> %out%
+echo bsdcpio-2.7.1-1-msys-1.0.11-bin.tar         >> %out%
+echo libarchive-2.7.1-1-msys-1.0.11-dll-2.tar    >> %out%
 echo libopenssl-0.9.8k-1-msys-1.0.11-dll-098.tar >> %out%
-echo zlib-1.2.3-2-msys-1.0.13-dll.tar >> %out%
+echo zlib-1.2.3-2-msys-1.0.13-dll.tar            >> %out%
 
 
 set A=for /F %%F in (%tmp%\msys_lzma_packages.txt) do
@@ -324,9 +336,9 @@ set C=if not exist %%F.done goto error
 
 
 set out=%tmp%\msys_gz_packages.txt
-echo xz-4.999.9beta_20100401-1-msys-1.0.13-bin.tar     > %out%
-echo liblzma-4.999.9beta_20100401-1-msys-1.0.13-dll-1.tar   >> %out%
-echo libbz2-1.0.5-1-msys-1.0.11-dll-1.tar   >> %out%
+echo xz-4.999.9beta_20100401-1-msys-1.0.13-bin.tar         >  %out%
+echo liblzma-4.999.9beta_20100401-1-msys-1.0.13-dll-1.tar  >> %out%
+echo libbz2-1.0.5-1-msys-1.0.11-dll-1.tar                  >> %out%
 
 
 set A=for /F %%F in (%tmp%\msys_gz_packages.txt) do
@@ -411,11 +423,9 @@ echo mingwrt-3.18-mingw32-dev.tar          >> %out%
 echo w32api-3.14-mingw32-dev.tar           >> %out%
 echo gdb-7.1-2-mingw32-bin.tar             >> %out%
 echo binutils-2.20-1-mingw32-bin.tar       >> %out%
-
 echo libbz2-1.0.5-2-mingw32-dll-2.tar      >> %out%
 echo bzip2-1.0.5-2-mingw32-bin.tar         >> %out%
 
-echo pthreads-w32-2.8.0-mingw32-dll.tar       >> %out%
 
 
 set A=for /F %%F in (%tmp%\mingw_gz_packages.txt) do
@@ -435,9 +445,6 @@ echo libgmp-5.0.1-1-mingw32-dll-10.tar     >> %out%
 echo libmpc-0.8.1-1-mingw32-dll-2.tar      >> %out%
 echo libmpfr-2.4.1-1-mingw32-dll-1.tar     >> %out%
 
-rem echo libpthread-2.8.0-3-mingw32-dll-2.tar  >> %out%
-
-echo pthreads-w32-2.8.0-3-mingw32-dev.tar  >> %out%
 
 
 set A=for /F %%F in (%tmp%\mingw_lzma_packages.txt) do
@@ -447,6 +454,18 @@ set C=if not exist %%F.done goto error
 
 
 
+
+rem remove pthread files installed by previous version of the script
+
+call %tmp%\remove_file_silent.bat %mingw_dir%\include\pthread.h
+call %tmp%\remove_file_silent.bat %mingw_dir%\include\sched.h
+call %tmp%\remove_file_silent.bat %mingw_dir%\include\semaphore.h
+call %tmp%\remove_file_silent.bat %mingw_dir%\lib\libpthread.dll.a
+
+call %tmp%\remove_file_silent.bat %mingw_dir%\mingw32\include\pthread.h
+call %tmp%\remove_file_silent.bat %mingw_dir%\mingw32\include\sched.h
+call %tmp%\remove_file_silent.bat %mingw_dir%\mingw32\include\semaphore.h
+call %tmp%\remove_file_silent.bat %mingw_dir%\mingw32\lib\libpthread.a
 
 
 
