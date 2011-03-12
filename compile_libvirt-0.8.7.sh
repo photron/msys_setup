@@ -30,6 +30,14 @@ then
     echo applied > mingw.patch.applied
 fi
 
+if [ -d /include/libvirt ]
+then
+    # remove previously installed libvirt header files. specifying -I/include
+    # makes the build pickup the old headers instead of it's own files.
+    # removing the old header files is a simple workaround for this problem.
+    rm -r /include/libvirt
+fi
+
 if [ ! -f configure.done ]
 then
     CFLAGS=-I/include \
