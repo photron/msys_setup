@@ -498,13 +498,14 @@ if %install_fontconfig% == yes call msys_setup_fontconfig.bat
 
 if %install_git% == yes call msys_setup_git.bat
 
+if %install_msvcr90% == yes call msys_setup_msvcr90.bat
+
 if %install_python% == yes call msys_setup_python.bat
 
 if %install_zlib% == yes call msys_setup_zlib.bat
 
 if %install_libpng% == yes call msys_setup_libpng.bat
 
-if %install_msvcr90% == yes call msys_setup_msvcr90.bat
 
 
 

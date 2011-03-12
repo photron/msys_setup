@@ -5,11 +5,11 @@ set install_pango=no
 set install_freetype=no
 set install_fontconfig=no
 set install_git=no
+set install_msvcr90=no
 set install_python=no
 set install_gnutls=no
 set install_zlib=no
 set install_libpng=no
-set install_msvcr90=no
 
 set install_libvirt_scripts=yes
 
