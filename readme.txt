@@ -1,4 +1,13 @@
 
+--- Is this what you're looking for?
+
+- if you want a prebuilt Windows installer for libvirt, rather than compiling
+  yourself, take a look at http://libvirt.org/windows.html
+
+
+
+
+
 --- Compiling libvirt using MSYS/MinGW
 
 
