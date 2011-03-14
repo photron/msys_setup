@@ -31,7 +31,7 @@
 - if you need VMware ESX support run compile_libcurl.sh in the MSYS shell
 
 
-- run compile_libvirt-0.8.7.sh in the MSYS shell
+- run compile_libvirt-0.8.8.sh in the MSYS shell
 
 
 - run gather_libvirt.sh in the MSYS shell
@@ -77,7 +77,7 @@
 
 - you can now start virt-manager from the MSYS shell. as it can't store it's
   configuration in a persistent way currently (due to the lack of a proper
-  gconf implementation), you'll need to specifiy the connection URI on every
+  gconf implementation), you'll need to specify the connection URI on every
   start like this:
 
   virt-manager --no-dbus --no-fork --connect qemu://<remote>/system
