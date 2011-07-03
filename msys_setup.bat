@@ -615,6 +615,7 @@ call %tmp%\install_patch.bat lua-5.1.4-mingw.patch
 call %tmp%\install_file.bat %base_dir%\compile_glib.sh                   %msys_dir%\bin\compile_glib.sh
 
 call %tmp%\install_file.bat %base_dir%\compile_zlib.sh                   %msys_dir%\bin\compile_zlib.sh
+call %tmp%\install_patch.bat zlib-1.2.5-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_cairo.sh                  %msys_dir%\bin\compile_cairo.sh
 

@@ -21,15 +21,22 @@ fi
 
 pushd $directory
 
-#if [ ! -f configure.done ]
-#then
-#    CFLAGS=-I/include\ -L/lib\ -Os ./configure --prefix=
-#
-#    echo done > configure.done
-#fi
+if [ ! -f mingw.patch.applied ]
+then
+    echo patching ...
+    patch -p1 < ../../zlib-${version}-mingw.patch
+    echo applied > mingw.patch.applied
+fi
 
-make -f win32/Makefile.gcc
-INCLUDE_PATH=/include LIBRARY_PATH=/lib make -f win32/Makefile.gcc install
+
+make -fwin32/Makefile.gcc
+cp libz-1.dll /bin
+cp libz.dll.a /lib
+cp libz.a /lib
+cp zlib.h /include
+cp zconf.h /include
+
+
 
 
 popd
