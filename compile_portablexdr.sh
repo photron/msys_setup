@@ -5,7 +5,7 @@
 basedir=/src/portablexdr
 baseurl=http://people.redhat.com/~rjones/portablexdr/files/
 version=4.9.1
-revision=1
+revision=2
 tarball=portablexdr-${version}.tar.gz
 directory=portablexdr-${version}-${revision}
 
@@ -23,11 +23,11 @@ fi
 
 pushd $directory
 
-if [ ! -f signature.patch.applied ]
+if [ ! -f mingw.patch.applied ]
 then
     echo patching ...
-    patch -p1 < ../../portablexdr-${version}-signature.patch
-    echo applied > signature.patch.applied
+    patch -p1 < ../../portablexdr-${version}-mingw.patch
+    echo applied > mingw.patch.applied
 fi
 
 if [ ! -f configure.done ]
