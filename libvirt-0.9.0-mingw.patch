@@ -1,0 +1,174 @@
+--- a/python/Makefile.am	2010-05-26 22:09:50 +0000
++++ b/python/Makefile.am	2010-09-10 20:26:24 +0000
+@@ -41,9 +41,9 @@
+ libvirtmod_la_CFLAGS = $(WARN_PYTHON_CFLAGS)
+ 
+ libvirtmod_la_LDFLAGS = -module -avoid-version -shared -L$(top_builddir)/src/.libs \
+-	$(CYGWIN_EXTRA_LDFLAGS)
++	$(CYGWIN_EXTRA_LDFLAGS) $(MINGW_EXTRA_LDFLAGS) -L/python/libs
+ libvirtmod_la_LIBADD = $(mylibs) \
+-	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD)
++	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD) -lpython26
+ 
+ GENERATE = generator.py
+ API_DESC = $(top_srcdir)/docs/libvirt-api.xml $(srcdir)/libvirt-override-api.xml
+ diff -ur a/python/Makefile.in b/python/Makefile.in
+--- a/python/Makefile.in	2010-09-07 17:46:28 +0000
++++ b/python/Makefile.in	2010-09-10 21:04:52 +0000
+@@ -1118,10 +1118,10 @@
+ # need extra flags here
+ @WITH_PYTHON_TRUE@libvirtmod_la_CFLAGS = $(WARN_PYTHON_CFLAGS)
+ @WITH_PYTHON_TRUE@libvirtmod_la_LDFLAGS = -module -avoid-version -shared -L$(top_builddir)/src/.libs \
+-@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LDFLAGS)
++@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LDFLAGS) $(MINGW_EXTRA_LDFLAGS) -L/python/libs
+ 
+ @WITH_PYTHON_TRUE@libvirtmod_la_LIBADD = $(mylibs) \
+-@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD)
++@WITH_PYTHON_TRUE@	$(CYGWIN_EXTRA_LIBADD) $(CYGWIN_EXTRA_PYTHON_LIBADD) -lpython26
+ 
+ @WITH_PYTHON_TRUE@GENERATE = generator.py
+ @WITH_PYTHON_TRUE@API_DESC = $(top_srcdir)/docs/libvirt-api.xml $(srcdir)/libvirt-override-api.xml
+
+
+
+
+
+Make the remote driver use TLS certificates from %APPDATA%\libvirt\pki\ instead of /etc/pki/
+--- a/src/remote/remote_driver.c	2010-11-11 17:25:02 +0000
++++ b/src/remote/remote_driver.c	2010-11-20 12:04:52 +0000
+@@ -276,6 +276,70 @@
+ static int initialize_gnutls(void);
+ static gnutls_session_t negotiate_gnutls_on_connection (virConnectPtr conn, struct private_data *priv, int no_verify);
+ 
++#ifdef WIN32
++
++static char *remoteWin32CertPaths[5];
++
++static int
++remoteInitCertPaths(void)
++{
++    const char *appdata = getenv("APPDATA");
++
++    if (appdata == NULL || *appdata == '\0') {
++        appdata = "C:";
++
++        VIR_WARN("APPDATA not set, falling back to '%s'", appdata);
++    }
++
++    if (virAsprintf(&remoteWin32CertPaths[0],
++                    "%s\\libvirt\\pki\\CA\\cacert.pem", appdata) < 0 ||
++        virAsprintf(&remoteWin32CertPaths[1],
++                    "%s\\libvirt\\pki\\libvirt\\private\\clientkey.pem", appdata) < 0 ||
++        virAsprintf(&remoteWin32CertPaths[2],
++                    "%s\\libvirt\\pki\\libvirt\\clientcert.pem", appdata) < 0 ||
++        virAsprintf(&remoteWin32CertPaths[3],
++                    "%s\\libvirt\\pki\\libvirt\\private\\serverkey.pem", appdata) < 0 ||
++        virAsprintf(&remoteWin32CertPaths[4],
++                    "%s\\libvirt\\pki\\libvirt\\servercert.pem", appdata) < 0) {
++        virReportOOMError();
++        return -1;
++    }
++
++    return 0;
++}
++
++static const char *
++remoteCACertPath(void)
++{
++    return remoteWin32CertPaths[0];
++}
++
++static const char *
++remoteClientKeyPath(void)
++{
++    return remoteWin32CertPaths[1];
++}
++
++static const char *
++remoteClientCertPath(void)
++{
++    return remoteWin32CertPaths[2];
++}
++
++static const char *
++remoteServerKeyPath(void)
++{
++    return remoteWin32CertPaths[3];
++}
++
++static const char *
++remoteServerCertPath(void)
++{
++    return remoteWin32CertPaths[4];
++}
++
++#endif /* WIN32 */
++
+ #ifdef WITH_LIBVIRTD
+ static int
+ remoteStartup(int privileged ATTRIBUTE_UNUSED)
+@@ -1246,7 +1328,7 @@
+     err =
+         gnutls_certificate_type_set_priority (session,
+                                               cert_type_priority);
+-    if (err) {
++    if (err && err != GNUTLS_E_UNIMPLEMENTED_FEATURE) {
+         remoteError(VIR_ERR_GNUTLS_ERROR,
+                     _("unable to set certificate priority: %s"),
+                     gnutls_strerror (err));
+@@ -10881,6 +10971,10 @@
+ int
+ remoteRegister (void)
+ {
++#ifdef WIN32
++    if (remoteInitCertPaths()) return -1;
++#endif
++
+     if (virRegisterDriver (&remote_driver) == -1) return -1;
+     if (virRegisterNetworkDriver (&network_driver) == -1) return -1;
+     if (virRegisterInterfaceDriver (&interface_driver) == -1) return -1;
+--- a/src/remote/remote_driver.h	2010-11-17 17:25:02 +0000
++++ b/src/remote/remote_driver.h	2010-11-18 08:24:54 +0000
+@@ -41,12 +41,19 @@
+ # define LIBVIRTD_CONFIGURATION_FILE SYSCONFDIR "/libvirtd.conf"
+ 
+ /* Defaults for PKI directory. */
+-# define LIBVIRT_PKI_DIR SYSCONFDIR "/pki"
+-# define LIBVIRT_CACERT LIBVIRT_PKI_DIR "/CA/cacert.pem"
+-# define LIBVIRT_CLIENTKEY LIBVIRT_PKI_DIR "/libvirt/private/clientkey.pem"
+-# define LIBVIRT_CLIENTCERT LIBVIRT_PKI_DIR "/libvirt/clientcert.pem"
+-# define LIBVIRT_SERVERKEY LIBVIRT_PKI_DIR "/libvirt/private/serverkey.pem"
+-# define LIBVIRT_SERVERCERT LIBVIRT_PKI_DIR "/libvirt/servercert.pem"
+-
++# ifndef WIN32
++#  define LIBVIRT_PKI_DIR SYSCONFDIR "/pki"
++#  define LIBVIRT_CACERT LIBVIRT_PKI_DIR "/CA/cacert.pem"
++#  define LIBVIRT_CLIENTKEY LIBVIRT_PKI_DIR "/libvirt/private/clientkey.pem"
++#  define LIBVIRT_CLIENTCERT LIBVIRT_PKI_DIR "/libvirt/clientcert.pem"
++#  define LIBVIRT_SERVERKEY LIBVIRT_PKI_DIR "/libvirt/private/serverkey.pem"
++#  define LIBVIRT_SERVERCERT LIBVIRT_PKI_DIR "/libvirt/servercert.pem"
++# else
++#  define LIBVIRT_CACERT remoteCACertPath()
++#  define LIBVIRT_CLIENTKEY remoteClientKeyPath()
++#  define LIBVIRT_CLIENTCERT remoteClientCertPath()
++#  define LIBVIRT_SERVERKEY remoteServerKeyPath()
++#  define LIBVIRT_SERVERCERT remoteServerCertPath()
++# endif
+ 
+ #endif /* __VIR_REMOTE_INTERNAL_H__ */
+
+
+
+--- a/tools/virsh.c
++++ b/tools/virsh.c
+@@ -12111,8 +12111,10 @@ vshInit(vshControl *ctl)
+     /* set up the signals handlers to catch disconnections */
+     vshSetupSignals();
+ 
++#if 0
+     if (virEventRegisterDefaultImpl() < 0)
+         return FALSE;
++#endif
+ 
+     ctl->conn = virConnectOpenAuth(ctl->name,
+                                    virConnectAuthPtrDefault,

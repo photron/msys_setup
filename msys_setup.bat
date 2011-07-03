@@ -563,6 +563,15 @@ call %tmp%\install_patch.bat libvirt-0.8.7-mingw.patch
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.8.8.sh          %msys_dir%\bin\compile_libvirt-0.8.8.sh
 call %tmp%\install_patch.bat libvirt-0.8.8-mingw.patch
 
+call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.9.0.sh          %msys_dir%\bin\compile_libvirt-0.9.0.sh
+call %tmp%\install_patch.bat libvirt-0.9.0-mingw.patch
+
+call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.9.1.sh          %msys_dir%\bin\compile_libvirt-0.9.1.sh
+call %tmp%\install_patch.bat libvirt-0.9.1-mingw.patch
+
+call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.9.2.sh          %msys_dir%\bin\compile_libvirt-0.9.2.sh
+call %tmp%\install_patch.bat libvirt-0.9.2-mingw.patch
+
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-git-snapshot.sh   %msys_dir%\bin\compile_libvirt-git-snapshot.sh
 call %tmp%\install_patch.bat libvirt-git-snapshot-mingw.patch
 
