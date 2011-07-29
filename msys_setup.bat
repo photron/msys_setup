@@ -519,6 +519,8 @@ if %install_libvirt_scripts% NEQ yes goto skip_libvirt_scripts
 
 call %tmp%\install_file.bat %base_dir%\utilslib.sh                       %msys_dir%\bin\utilslib.sh
 
+call %tmp%\install_file.bat %base_dir%\compile_xhtml1-dtds.sh            %msys_dir%\bin\compile_xhtml1-dtds.sh
+
 call %tmp%\install_file.bat %base_dir%\compile_portablexdr.sh            %msys_dir%\bin\compile_portablexdr.sh
 call %tmp%\install_patch.bat portablexdr-4.9.1-mingw.patch
 
