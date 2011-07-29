@@ -4,10 +4,8 @@
 
 basedir=/src/libcurl
 baseurl=http://curl.haxx.se/download
-#version=7.19.7
-#version=7.21.1
-version=7.21.2
-revision=1
+version=7.21.7
+revision=0
 tarball=curl-${version}.tar.gz
 directory=curl-${version}-${revision}
 
