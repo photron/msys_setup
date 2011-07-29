@@ -4,8 +4,8 @@
 
 basedir=/src/libxml2
 url=ftp://xmlsoft.org/libxml2
-version=2.7.7
-revision=1
+version=2.7.8
+revision=0
 tarball=libxml2-${version}.tar.gz
 directory=libxml2-${version}-${revision}
 
@@ -23,12 +23,12 @@ fi
 
 pushd $directory
 
-if [ ! -f mingw.patch.applied ]
-then
-    echo patching ...
-    patch -p1 < ../../libxml2-${version}-mingw.patch
-    echo applied > mingw.patch.applied
-fi
+#if [ ! -f mingw.patch.applied ]
+#then
+#    echo patching ...
+#    patch -p1 < ../../libxml2-${version}-mingw.patch
+#    echo applied > mingw.patch.applied
+#fi
 
 if [ ! -f configure.done ]
 then
