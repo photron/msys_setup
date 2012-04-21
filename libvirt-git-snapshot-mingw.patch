@@ -107,10 +107,10 @@ Make the remote driver use TLS certificates from %APPDATA%\libvirt\pki\ instead 
  #ifdef WITH_LIBVIRTD
  static int
  remoteStartup(int privileged ATTRIBUTE_UNUSED)
-@@ -10881,6 +10971,10 @@
- int
- remoteRegister (void)
+@@ -4881,6 +4971,10 @@
  {
+     remoteDriver = &remote_driver;
+ 
 +#ifdef WIN32
 +    if (remoteInitCertPaths()) return -1;
 +#endif
@@ -147,3 +147,91 @@ Make the remote driver use TLS certificates from %APPDATA%\libvirt\pki\ instead 
 +# endif
  
  #endif /* __VIR_REMOTE_INTERNAL_H__ */
+--- a/src/util/virauth.c
++++ b/src/util/virauth.c
+@@ -100,7 +100,7 @@ no_memory:
+     goto cleanup;
+ }
+ 
+-
++/*
+ static int
+ virAuthGetCredential(virConnectPtr conn,
+                      const char *servicename,
+@@ -144,25 +144,25 @@ cleanup:
+     virAuthConfigFree(config);
+     VIR_FREE(path);
+     return ret;
+-}
++}*/
+ 
+ 
+ char *
+-virAuthGetUsername(virConnectPtr conn,
++virAuthGetUsername(virConnectPtr conn ATTRIBUTE_UNUSED,
+                    virConnectAuthPtr auth,
+-                   const char *servicename,
++                   const char *servicename ATTRIBUTE_UNUSED,
+                    const char *defaultUsername,
+                    const char *hostname)
+ {
+     unsigned int ncred;
+     virConnectCredential cred;
+     char *prompt;
+-    char *ret = NULL;
++    /*char *ret = NULL;
+ 
+     if (virAuthGetCredential(conn, servicename, "username", &ret) < 0)
+         return NULL;
+     if (ret != NULL)
+-        return ret;
++        return ret;*/
+ 
+     memset(&cred, 0, sizeof(virConnectCredential));
+ 
+@@ -204,21 +204,21 @@ virAuthGetUsername(virConnectPtr conn,
+ 
+ 
+ char *
+-virAuthGetPassword(virConnectPtr conn,
++virAuthGetPassword(virConnectPtr conn ATTRIBUTE_UNUSED,
+                    virConnectAuthPtr auth,
+-                   const char *servicename,
++                   const char *servicename ATTRIBUTE_UNUSED,
+                    const char *username,
+                    const char *hostname)
+ {
+     unsigned int ncred;
+     virConnectCredential cred;
+     char *prompt;
+-    char *ret = NULL;
++    /*char *ret = NULL;
+ 
+     if (virAuthGetCredential(conn, servicename, "password", &ret) < 0)
+         return NULL;
+     if (ret != NULL)
+-        return ret;
++        return ret;*/
+ 
+     memset(&cred, 0, sizeof(virConnectCredential));
+ 
+--- a/src/util/threads-win32.c
++++ b/src/util/threads-win32.c
+@@ -316,8 +316,15 @@ int virThreadCreate(virThreadPtr thread,
+ void virThreadSelf(virThreadPtr thread)
+ {
+     virThreadPtr self = TlsGetValue(selfkey);
+-    thread->thread = self->thread;
+-    thread->joinable = self->joinable;
++
++    if (self == NULL) {
++        /* called on a thread not created by virThreadCreate, e.g. the main thread */
++        thread->thread = 0;
++        thread->joinable = false;
++    } else {
++        thread->thread = self->thread;
++        thread->joinable = self->joinable;
++    }
+ }
+ 
+ bool virThreadIsSelf(virThreadPtr thread)
