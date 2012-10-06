@@ -595,6 +595,9 @@ call %tmp%\install_patch.bat libvirt-0.9.10-mingw.patch
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.9.11.sh         %msys_dir%\bin\compile_libvirt-0.9.11.sh
 call %tmp%\install_patch.bat libvirt-0.9.11-mingw.patch
 
+call %tmp%\install_file.bat %base_dir%\compile_libvirt-0.10.2.sh         %msys_dir%\bin\compile_libvirt-0.10.2.sh
+call %tmp%\install_patch.bat libvirt-0.10.2-mingw.patch
+
 call %tmp%\install_file.bat %base_dir%\compile_libvirt-git-snapshot.sh   %msys_dir%\bin\compile_libvirt-git-snapshot.sh
 call %tmp%\install_patch.bat libvirt-git-snapshot-mingw.patch
 

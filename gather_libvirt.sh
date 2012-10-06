@@ -51,6 +51,7 @@ libcurl-4.dll"
 
 rewriteimports virsh.exe $imports
 rewriteimports libvirt-0.dll $imports
+rewriteimports libvirt-qemu-0.dll $imports
 rewriteimports libxml2-2.dll $imports
 rewriteimports libgcrypt-11.dll $imports
 rewriteimports libgnutls-26.dll $imports
