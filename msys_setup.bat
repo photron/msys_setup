@@ -57,6 +57,9 @@ if %install_libpng% == yes set install_zlib=yes
 
 
 
+if %compile_everything_from_source% == yes set install_libiconv=no
+if %compile_everything_from_source% == yes set install_zlib=no
+
 
 
 rem ===========================================================================
@@ -380,6 +383,8 @@ echo export PATH=$GOBIN:$PATH  >> %msys_dir%\etc\profile.d\go.sh
 
 
 
+echo export PATH=/sbin:$PATH   >  %msys_dir%\etc\profile.d\basics.sh
+
 
 
 
@@ -476,11 +481,12 @@ rem ===========================================================================
 
 call msys_setup_perl.bat
 call msys_setup_glib.bat
-call msys_setup_libiconv.bat
 call msys_setup_pkgconfig.bat
 call msys_setup_intltool.bat
 call msys_setup_gettext.bat
 call msys_setup_expat.bat
+
+if %install_libiconv% == yes call msys_setup_libiconv.bat
 
 if %install_gnutls% == yes call msys_setup_gnutls.bat
 
@@ -506,6 +512,7 @@ if %install_zlib% == yes call msys_setup_zlib.bat
 
 if %install_libpng% == yes call msys_setup_libpng.bat
 
+if %install_nsinstall% == yes call msys_setup_nsinstall.bat
 
 
 
@@ -518,6 +525,8 @@ rem ===========================================================================
 if %install_libvirt_scripts% NEQ yes goto skip_libvirt_scripts
 
 call %tmp%\install_file.bat %base_dir%\utilslib.sh                       %msys_dir%\bin\utilslib.sh
+
+call %tmp%\install_file.bat %base_dir%\compile_libiconv.sh               %msys_dir%\bin\compile_libiconv.sh
 
 call %tmp%\install_file.bat %base_dir%\compile_xhtml1-dtds.sh            %msys_dir%\bin\compile_xhtml1-dtds.sh
 

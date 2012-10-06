@@ -39,5 +39,12 @@ fi
 make
 make install
 
+
+# prepare gather
+cp .libs/libportablexdr-0.dll $prepare_bin
+cp ../portablexdr-${version}.tar.gz $prepare_src
+cp ../../portablexdr-${version}-mingw.patch $prepare_src
+
+
 popd
 popd

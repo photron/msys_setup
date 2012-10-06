@@ -3,6 +3,10 @@
 
 - run msys\msys.bat to open a MSYS shell
 
+- run compile_zlib.sh in the MSYS shell
+
+- run compile_libiconv.sh in the MSYS shell
+
 - run compile_portablexdr.sh in the MSYS shell
 
 - run compile_libxml2.sh in the MSYS shell

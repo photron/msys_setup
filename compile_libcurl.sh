@@ -58,5 +58,11 @@ fi
 make
 make install
 
+
+# prepare gather
+cp lib/.libs/libcurl-4.dll $prepare_bin
+cp ../curl-${version}.tar.gz $prepare_src
+cp ../../curl-${version}-gnutls.patch $prepare_src
+
 popd
 popd

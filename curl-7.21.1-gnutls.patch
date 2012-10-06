@@ -1,3 +1,26 @@
+--- a/configure	2010-10-28 15:15:57 +0000
++++ b/configure	2010-10-28 15:15:09 +0000
+@@ -20541,7 +20541,7 @@
+       fi
+     else
+         # Without pkg-config, we'll kludge in some defaults
+-        addlib="-L$OPT_NSS/lib -lssl3 -lsmime3 -lnss3 -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
++        addlib="-L$OPT_NSS/lib -lssl3 -lsmime3 -lnss3 -lplds4 -lplc4 -lnspr4 -lpthread"
+         addcflags="-I$OPT_NSS/include"
+         version="unknown"
+         nssprefix=$OPT_NSS
+--- a/configure.ac	2010-10-28 15:15:41 +0000
++++ b/configure.ac	2010-10-28 15:15:25 +0000
+@@ -1843,7 +1843,7 @@
+       fi
+     else
+         # Without pkg-config, we'll kludge in some defaults
+-        addlib="-L$OPT_NSS/lib -lssl3 -lsmime3 -lnss3 -lplds4 -lplc4 -lnspr4 -lpthread -ldl"
++        addlib="-L$OPT_NSS/lib -lssl3 -lsmime3 -lnss3 -lplds4 -lplc4 -lnspr4 -lpthread"
+         addcflags="-I$OPT_NSS/include"
+         version="unknown"
+         nssprefix=$OPT_NSS
+
 --- a/lib/gtls.c 2010-01-24 01:08:28 +0000
 +++ b/lib/gtls.c 2010-01-24 01:10:15 +0000
 @@ -357,22 +357,28 @@
