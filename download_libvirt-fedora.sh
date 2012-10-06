@@ -62,11 +62,11 @@ then
     bsdcpio -id < mingw32-zlib-1.2.3-19.fc12.noarch.cpio.lzma
 fi
 
-if [ ! -f mingw32-portablexdr-4.9.1-1.fc15.noarch.rpm ]
+if [ ! -f mingw32-portablexdr-4.9.1-1.fc14.noarch.rpm ]
 then
-    wget $koji/mingw32-portablexdr/4.9.1/1.fc15/noarch/mingw32-portablexdr-4.9.1-1.fc15.noarch.rpm
-    7z x mingw32-portablexdr-4.9.1-1.fc15.noarch.rpm
-    bsdcpio -id < mingw32-portablexdr-4.9.1-1.fc15.noarch.cpio.lzma
+    wget $koji/mingw32-portablexdr/4.9.1/1.fc14/noarch/mingw32-portablexdr-4.9.1-1.fc14.noarch.rpm
+    7z x mingw32-portablexdr-4.9.1-1.fc14.noarch.rpm
+    bsdcpio -id < mingw32-portablexdr-4.9.1-1.fc14.noarch.cpio.lzma
 fi
 
 if [ ! -f mingw32-libxml2-2.7.6-1.fc13.noarch.rpm ]
@@ -88,6 +88,38 @@ then
     wget $koji/mingw32-termcap/1.3.1/8.fc12/noarch/mingw32-termcap-1.3.1-8.fc12.noarch.rpm
     7z x mingw32-termcap-1.3.1-8.fc12.noarch.rpm
     bsdcpio -id < mingw32-termcap-1.3.1-8.fc12.noarch.cpio.lzma
+fi
+
+
+
+
+
+if [ ! -f mingw32-curl-7.20.1-1.fc14.noarch.rpm ]
+then
+    wget $koji/mingw32-curl/7.20.1/1.fc14/noarch/mingw32-curl-7.20.1-1.fc14.noarch.rpm
+    7z x mingw32-curl-7.20.1-1.fc14.noarch.rpm
+    bsdcpio -id < mingw32-curl-7.20.1-1.fc14.noarch.cpio.lzma
+fi
+
+if [ ! -f mingw32-libidn-1.14-5.fc12.noarch.rpm ]
+then
+    wget $koji/mingw32-libidn/1.14/5.fc12/noarch/mingw32-libidn-1.14-5.fc12.noarch.rpm
+    7z x mingw32-libidn-1.14-5.fc12.noarch.rpm
+    bsdcpio -id < mingw32-libidn-1.14-5.fc12.noarch.cpio.lzma
+fi
+
+if [ ! -f mingw32-libssh2-1.1-5.fc12.noarch.rpm ]
+then
+    wget $koji/mingw32-libssh2/1.1/5.fc12/noarch/mingw32-libssh2-1.1-5.fc12.noarch.rpm
+    7z x mingw32-libssh2-1.1-5.fc12.noarch.rpm
+    bsdcpio -id < mingw32-libssh2-1.1-5.fc12.noarch.cpio.lzma
+fi
+
+if [ ! -f mingw32-openssl-1.0.0a-1.fc14.noarch.rpm ]
+then
+    wget $koji/mingw32-openssl/1.0.0a/1.fc14/noarch/mingw32-openssl-1.0.0a-1.fc14.noarch.rpm
+    7z x mingw32-openssl-1.0.0a-1.fc14.noarch.rpm
+    bsdcpio -id < mingw32-openssl-1.0.0a-1.fc14.noarch.cpio.lzma
 fi
 
 popd
