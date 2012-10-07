@@ -39,7 +39,7 @@ fi
 
 if [ ! -f configure.done ]
 then
-    CFLAGS=-I/include\ -g\ -ggdb\ -O0 \
+    CFLAGS=-I/include\ -g\ -ggdb\ -O0\ -march=i686 \
     LDFLAGS=-L/lib \
     ./configure --prefix= \
                 --enable-debug=yes \
