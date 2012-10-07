@@ -1,0 +1,36 @@
+--- a/python/Makefile.am	2009-09-24 15:32:00 +0000
++++ b/python/Makefile.am	2010-09-11 20:32:31 +0000
+@@ -31,7 +31,7 @@
+ python_LTLIBRARIES = libxml2mod.la
+ 
+ libxml2mod_la_SOURCES = libxml.c libxml_wrap.h libxml2-py.h libxml2-py.c types.c
+-libxml2mod_la_LIBADD  = $(top_builddir)/libxml2.la $(CYGWIN_EXTRA_PYTHON_LIBADD) $(WIN32_EXTRA_PYTHON_LIBADD) $(PYTHON_LIBS) -lpython$(PYTHON_VERSION)
++libxml2mod_la_LIBADD  = $(top_builddir)/libxml2.la $(CYGWIN_EXTRA_PYTHON_LIBADD) $(WIN32_EXTRA_PYTHON_LIBADD) -L/python/libs $(PYTHON_LIBS) -lpython$(PYTHON_VERSION) -Wl,libxml2mod.def
+ libxml2mod_la_LDFLAGS = $(CYGWIN_EXTRA_LDFLAGS) $(WIN32_EXTRA_LDFLAGS) -module -avoid-version
+ 
+ BUILT_SOURCES = libxml2-export.c libxml2-py.h libxml2-py.c
+--- a/python/Makefile.in	2010-09-10 22:50:20 +0000
++++ b/python/Makefile.in	2010-09-10 22:50:30 +0000
+@@ -222,7 +222,7 @@
+ PERL = @PERL@
+ PYTHON = @PYTHON@
+ PYTHON_INCLUDES = @PYTHON_INCLUDES@
+-PYTHON_LIBS = @PYTHON_LIBS@
++PYTHON_LIBS = -L/python/libs @PYTHON_LIBS@
+ PYTHON_SITE_PACKAGES = @PYTHON_SITE_PACKAGES@
+ PYTHON_SUBDIR = @PYTHON_SUBDIR@
+ PYTHON_TESTS = @PYTHON_TESTS@
+@@ -388,7 +388,7 @@
+
+ @WITH_PYTHON_TRUE@python_LTLIBRARIES = libxml2mod.la
+ @WITH_PYTHON_TRUE@libxml2mod_la_SOURCES = libxml.c libxml_wrap.h libxml2-py.h libxml2-py.c types.c
+-@WITH_PYTHON_TRUE@libxml2mod_la_LIBADD = $(top_builddir)/libxml2.la $(CYGWIN_EXTRA_PYTHON_LIBADD) $(WIN32_EXTRA_PYTHON_LIBADD) $(PYTHON_LIBS) -lpython$(PYTHON_VERSION)
++@WITH_PYTHON_TRUE@libxml2mod_la_LIBADD = $(top_builddir)/libxml2.la $(CYGWIN_EXTRA_PYTHON_LIBADD) $(WIN32_EXTRA_PYTHON_LIBADD) -L/python/libs $(PYTHON_LIBS) -lpython$(PYTHON_VERSION) -Wl,libxml2mod.def
+ @WITH_PYTHON_TRUE@libxml2mod_la_LDFLAGS = $(CYGWIN_EXTRA_LDFLAGS) $(WIN32_EXTRA_LDFLAGS) -module -avoid-version
+ @WITH_PYTHON_TRUE@BUILT_SOURCES = libxml2-export.c libxml2-py.h libxml2-py.c
+ @WITH_PYTHON_TRUE@dist_python_DATA = \
+--- a/python/libxml2mod.def
++++ b/python/libxml2mod.def
+@@ -0,0 +1,2 @@
++EXPORTS
++    initlibxml2mod

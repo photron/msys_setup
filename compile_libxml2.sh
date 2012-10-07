@@ -4,7 +4,7 @@
 
 basedir=/src/libxml2
 url=ftp://xmlsoft.org/libxml2
-version=2.7.8
+version=2.9.0
 revision=0
 tarball=libxml2-${version}.tar.gz
 directory=libxml2-${version}-${revision}

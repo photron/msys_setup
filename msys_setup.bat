@@ -536,6 +536,7 @@ call %tmp%\install_patch.bat portablexdr-4.9.1-mingw.patch
 call %tmp%\install_file.bat %base_dir%\compile_libxml2.sh                %msys_dir%\bin\compile_libxml2.sh
 call %tmp%\install_patch.bat libxml2-2.7.6-mingw.patch
 call %tmp%\install_patch.bat libxml2-2.7.7-mingw.patch
+call %tmp%\install_patch.bat libxml2-2.9.0-mingw.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_polarssl.sh               %msys_dir%\bin\compile_polarssl.sh
 call %tmp%\install_patch.bat polarssl-0.13.1-mingw.patch
