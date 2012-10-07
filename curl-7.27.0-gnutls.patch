@@ -1,0 +1,10 @@
+--- a/lib/gtls.c
++++ b/lib/gtls.c
+@@ -471,7 +471,7 @@
+      is higher for types specified before others. After specifying the types
+      you want, you must append a 0. */
+   rc = gnutls_certificate_type_set_priority(session, cert_type_priority);
+-  if(rc != GNUTLS_E_SUCCESS)
++  if(rc != GNUTLS_E_SUCCESS && rc != GNUTLS_E_UNIMPLEMENTED_FEATURE)
+     return CURLE_SSL_CONNECT_ERROR;
+ #endif

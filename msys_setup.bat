@@ -550,6 +550,7 @@ call %tmp%\install_patch.bat curl-7.19.7-gnutls.patch
 call %tmp%\install_patch.bat curl-7.21.1-gnutls.patch
 call %tmp%\install_patch.bat curl-7.21.2-gnutls.patch
 call %tmp%\install_patch.bat curl-7.21.7-gnutls.patch
+call %tmp%\install_patch.bat curl-7.27.0-gnutls.patch
 
 call %tmp%\install_file.bat %base_dir%\compile_libssh2.sh                %msys_dir%\bin\compile_libssh2.sh
 
