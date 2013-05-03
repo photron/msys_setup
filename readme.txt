@@ -9,7 +9,12 @@
 --- Is this what you're looking for?
 
 - if you want a prebuilt Windows installer for libvirt, rather than compiling
-  yourself, take a look at http://libvirt.org/windows.html
+  from source yourself, take a look at http://libvirt.org/windows.html
+
+- that installer is for a quite old version by now and it includes 32-bit
+  binaries only. more recent libvirt binaries for 32-bit and 64-bit are part
+  of the the virt-viewer installer for Windows that can be downloaded from
+  http://spice-space.org/download.html
 
 
 
