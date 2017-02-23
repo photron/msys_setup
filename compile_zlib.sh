@@ -4,7 +4,7 @@
 
 basedir=/src/zlib
 baseurl=http://zlib.net
-version=1.2.8
+version=1.2.11
 tarball=zlib-${version}.tar.gz
 directory=zlib-${version}
 
